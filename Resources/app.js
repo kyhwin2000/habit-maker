@@ -53,12 +53,27 @@ var data = [
 		{title:"매일 신문", hasChild:true, color:'red', selectedColor:'#fff'},
 		{title:"매일 편지", hasChild:true, color:'red', selectedColor:'#fff'}
 ];
-
+/*
 // create table view
 for (var i = 0; i < data.length; i++ ) { 
 	data[i].color = '#000'; 
-	data[i].font = {fontWeight:'bold'} 
+	data[i].font = {fontWeight:'bold'}
 };
+
+var row = Ti.UI.createTableViewRow({
+		className:'habits',
+		selectedBackgroundColor:'white',
+		height:30
+});
+var Progress = Ti.UI.createLabel({
+	color:'#576996',
+   	font:{fontFamily:'Arial', fontSize:24, fontWeight:'bold'},
+   	text:'34 %',
+   	left:240, top: 6,
+   	width:200, height: 30
+}); 
+row.add(Progress);
+data.push(row);
 var tableview = Titanium.UI.createTableView({
 	data:data
 });
@@ -67,6 +82,66 @@ tableview.addEventListener('click',function(e){
 	tab1.open(win2);
 });
 win1.add(tableview);
+*/
+
+// generate random number, used to make each row appear distinct for this example
+function randomInt(max){
+  return Math.floor(Math.random() * max) + 1;
+}
+
+var IMG_BASE = 'https://github.com/appcelerator/titanium_mobile/raw/master/demos/KitchenSink/Resources/images/';
+var defaultFontSize = Ti.Platform.name === 'android' ? 16 : 14;
+
+var tableData = [];
+
+for (var i=1; i<=20; i++){
+  var row = Ti.UI.createTableViewRow({
+    className:'habits', // used to improve table performance
+    selectedBackgroundColor:'white',
+    rowIndex:i, // custom property, useful for determining the row during events
+    height:60
+  });
+  
+  var habitName = Ti.UI.createLabel({
+    color:'#576996',
+    font:{fontFamily:'Arial', fontSize:defaultFontSize+6, fontWeight:'bold'},
+    text:'habit'+i,
+    left:10, top: 20,
+    width:200, height: 30
+  });
+  row.add(habitName);
+  
+  var habitProgress = Ti.UI.createLabel({
+    color:'#999',
+    font:{fontFamily:'Arial', fontSize:defaultFontSize, fontWeight:'normal'},
+    text:randomInt(100) + ' % 진행',
+    left:240, top:20,
+    width:200, height:20
+  });
+  row.add(habitProgress);
+  tableData.push(row);
+}
+
+var tableView = Ti.UI.createTableView({
+  backgroundColor:'white',
+  data:tableData
+});
+
+tableView.addEventListener('click',function(e){
+	tab1.open(win2);
+});
+
+win1.add(tableView);
+win1.open();
+
+// 내비게이션 바에 추가 버튼 만들기
+var addEvent = Titanium.UI.createButton({ title:'추가' });
+win1.rightNavButton = addEvent;
+addEvent.addEventListener('click', function()
+{
+	//tab1.open(win3);
+	alert("you clicked me!");
+});
 
 //
 // create controls tab and root window
