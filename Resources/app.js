@@ -28,7 +28,7 @@ var tabGroup = Titanium.UI.createTabGroup();
 // create base UI tab and root window
 //
 var win1 = Titanium.UI.createWindow({  
-    title:'Tab 1',
+    title:'습관 목록',
     backgroundColor:'#fff'
 });
 var tab1 = Titanium.UI.createTab({  
@@ -89,7 +89,7 @@ function randomInt(max){
   return Math.floor(Math.random() * max) + 1;
 }
 
-var IMG_BASE = 'https://github.com/appcelerator/titanium_mobile/raw/master/demos/KitchenSink/Resources/images/';
+// var IMG_BASE = 'https://github.com/appcelerator/titanium_mobile/raw/master/demos/KitchenSink/Resources/images/';
 var defaultFontSize = Ti.Platform.name === 'android' ? 16 : 14;
 
 var tableData = [];
@@ -134,20 +134,26 @@ tableView.addEventListener('click',function(e){
 win1.add(tableView);
 win1.open();
 
+var inputWindow = Ti.UI.createWindow({
+	title: '습관 입력',
+	backgroundColor:'#fff',
+	url: 'inputWindow.js'
+});
+
 // 내비게이션 바에 추가 버튼 만들기
 var addEvent = Titanium.UI.createButton({ title:'추가' });
 win1.rightNavButton = addEvent;
 addEvent.addEventListener('click', function()
 {
 	//tab1.open(win3);
-	alert("you clicked me!");
+	tab1.open(inputWindow);
 });
 
 //
 // create controls tab and root window
 //
 var win2 = Titanium.UI.createWindow({  
-    title:'Tab 2',
+    title:'습관 달력',
     backgroundColor:'#fff'
 });
 var tab2 = Titanium.UI.createTab({  
