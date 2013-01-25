@@ -1,12 +1,13 @@
 dependencies: \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/MGSplitView/MGSplitView.m \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/MGSplitView/MGSplitView.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiApp.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiHost.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/MGSplitView/MGSplitViewController.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiBase.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiThreading.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiPublicAPI.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiApp.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiHost.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiProxy.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiEvaluator.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/KrollContext.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/headers/TiCore/TiCore.h \
@@ -28,6 +29,7 @@ dependencies: \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiFile.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiBuffer.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiBlob.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/XHRBridge.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRootViewController.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRootController.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiWindowProxy.h \

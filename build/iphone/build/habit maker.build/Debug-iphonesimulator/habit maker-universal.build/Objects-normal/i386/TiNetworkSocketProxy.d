@@ -15,4 +15,8 @@ dependencies: \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/headers/TiCore/TiContextRefPrivate.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/KrollCallback.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/KrollObject.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiNetworkSocketTCPProxy.h
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiNetworkSocketTCPProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiStreamProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/Tibuffer.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiBlob.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/AsyncSocket.h

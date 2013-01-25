@@ -51,6 +51,7 @@ dependencies: \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiApp.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiHost.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiStylesheet.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/XHRBridge.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRootViewController.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRootController.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiTabController.h \

@@ -24,26 +24,42 @@ dependencies: \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiBuffer.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiBlob.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIAlertDialogProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/Ti2DMatrix.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/Ti3DMatrix.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiAnimation.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiPoint.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/ListenerEntry.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/LayoutConstraint.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiPhoneProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiPadProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiPadPopoverProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiViewProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIView.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiGradient.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRect.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiViewController.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiPadSplitWindowProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiWindowProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiTab.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiTabGroup.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIWindow.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiPadDocumentViewerProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiOSProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiOSAdViewProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIViewProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIClipboardProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiOSCoverFlowViewProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiOSToolbarProxy.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiToolbar.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIiOSTabbedBarProxy.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiApp.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiHost.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/Bridge.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiStylesheet.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/KrollBridge.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/XHRBridge.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRootViewController.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRootController.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiWindowProxy.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiViewProxy.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIView.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiAnimation.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiPoint.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/ListenerEntry.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/LayoutConstraint.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiGradient.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRect.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiTab.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiTabGroup.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiUIWindow.h \
-  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiViewController.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/ImageLoader.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/ASI/ASIHTTPRequest.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/ASI/ASIHTTPRequestConfig.h \

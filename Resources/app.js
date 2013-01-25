@@ -141,9 +141,9 @@ var inputWindow = Ti.UI.createWindow({
 });
 
 // 내비게이션 바에 추가 버튼 만들기
-var addEvent = Titanium.UI.createButton({ title:'추가' });
-win1.rightNavButton = addEvent;
-addEvent.addEventListener('click', function()
+var addHabit = Titanium.UI.createButton({ title:'추가' });
+win1.rightNavButton = addHabit;
+addHabit.addEventListener('click', function()
 {
 	//tab1.open(win3);
 	tab1.open(inputWindow);

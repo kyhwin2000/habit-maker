@@ -29,6 +29,7 @@ dependencies: \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/Bridge.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiStylesheet.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/KrollBridge.h \
+  /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/XHRBridge.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRootViewController.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiRootController.h \
   /Users/kimyongho/Documents/Titanium_Studio_Workspace/habit\ maker/build/iphone/Classes/TiWindowProxy.h \
