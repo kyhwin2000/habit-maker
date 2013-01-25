@@ -23,7 +23,6 @@ Titanium.UI.setBackgroundColor('#000');
 // create tab group
 var tabGroup = Titanium.UI.createTabGroup();
 
-
 //
 // create base UI tab and root window
 //
@@ -36,7 +35,6 @@ var tab1 = Titanium.UI.createTab({
     title:'Tab 1',
     window:win1
 });
-
 var label1 = Titanium.UI.createLabel({
 	color:'#999',
 	text:'I am Window 1',
@@ -53,36 +51,6 @@ var data = [
 		{title:"매일 신문", hasChild:true, color:'red', selectedColor:'#fff'},
 		{title:"매일 편지", hasChild:true, color:'red', selectedColor:'#fff'}
 ];
-/*
-// create table view
-for (var i = 0; i < data.length; i++ ) { 
-	data[i].color = '#000'; 
-	data[i].font = {fontWeight:'bold'}
-};
-
-var row = Ti.UI.createTableViewRow({
-		className:'habits',
-		selectedBackgroundColor:'white',
-		height:30
-});
-var Progress = Ti.UI.createLabel({
-	color:'#576996',
-   	font:{fontFamily:'Arial', fontSize:24, fontWeight:'bold'},
-   	text:'34 %',
-   	left:240, top: 6,
-   	width:200, height: 30
-}); 
-row.add(Progress);
-data.push(row);
-var tableview = Titanium.UI.createTableView({
-	data:data
-});
-
-tableview.addEventListener('click',function(e){
-	tab1.open(win2);
-});
-win1.add(tableview);
-*/
 
 // generate random number, used to make each row appear distinct for this example
 function randomInt(max){
@@ -94,7 +62,7 @@ var defaultFontSize = Ti.Platform.name === 'android' ? 16 : 14;
 
 var tableData = [];
 
-for (var i=1; i<=20; i++){
+for (var i=0; i<=data.length; i++){
   var row = Ti.UI.createTableViewRow({
     className:'habits', // used to improve table performance
     selectedBackgroundColor:'white',
@@ -122,8 +90,31 @@ for (var i=1; i<=20; i++){
   tableData.push(row);
 }
 
+// 테이블 뷰 위에 텍스트필드 넣기
+// 텍스트 필드 생성. 키보드 타입 지정.  
+var tf1 = Titanium.UI.createTextField({
+		color:'#336699',
+		height:35,
+		top:10,
+		left:10,
+		width:300,
+		hintText:'Add an item',
+		keyboardType:Titanium.UI.KEYBOARD_DEFAULT,
+		returnKeyType:Titanium.UI.RETURNKEY_DEFAULT,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+});
+
+// 엔터치면 로컬 DB에 새로운 습관 저장 
+tf1.addEventListener('return', function()
+{
+	tf1.blur();
+});    
+win1.add(tf1);
+
+
 var tableView = Ti.UI.createTableView({
   backgroundColor:'white',
+  top:50,
   data:tableData
 });
 
@@ -134,11 +125,13 @@ tableView.addEventListener('click',function(e){
 win1.add(tableView);
 win1.open();
 
+/*
 var inputWindow = Ti.UI.createWindow({
 	title: '습관 입력',
 	backgroundColor:'#fff',
 	url: 'inputWindow.js'
 });
+
 
 // 내비게이션 바에 추가 버튼 만들기
 var addHabit = Titanium.UI.createButton({ title:'추가' });
@@ -146,8 +139,10 @@ win1.rightNavButton = addHabit;
 addHabit.addEventListener('click', function()
 {
 	//tab1.open(win3);
+
 	tab1.open(inputWindow);
 });
+*/
 
 //
 // create controls tab and root window
