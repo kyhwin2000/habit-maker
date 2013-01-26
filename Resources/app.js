@@ -1,10 +1,11 @@
+/* 전역 변수 선언 */  
 var osname = Ti.Platform.osname,
 	version = Ti.Platform.version,
 	scrHeight = Ti.Platform.displayCaps.platformHeight,
 	scrWidth = Ti.Platform.displayCaps.platformWidth;
 
+var defaultFontSize = Ti.Platform.name === 'android' ? 16 : 14;
 
-/* 변수 선언 */  
 var tileWidth = scrWidth/7;
 var date = new Date();
 var datesOnMonth = new Array(31,31,28,31,30,31,30,31,31,30,31,30,31);
@@ -17,6 +18,69 @@ var currentDate = date.getDate();
 //alert('오늘은 '+currentYear+'년 '+currentMonth+'월 '+currentDate+'일이다.');
 
 
+/* DB 만들기 */
+ 
+var db = Ti.Database.open('habits');
+db.execute('CREATE TABLE IF NOT EXISTS habit (name TEXT, days TEXT, status TEXT)');
+db.execute('DELETE FROM habit');
+
+// 초기 데이터 입력 
+var habit01Array = ['매일 코딩','12','20%'];
+db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit01Array);
+var habit02Array = ['매일 운동','24','30%'];
+db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit02Array);
+var rowRS = db.execute('SELECT * FROM habit');
+
+/*
+Ti.API.info('Row count: ' + rowRS.rowCount);
+var fieldCount;
+// fieldCount is a property on Android.
+if (Ti.Platform.name === 'android') {
+    fieldCount = rowRS.fieldCount;
+} else {
+    fieldCount = rowRS.fieldCount();
+}
+Ti.API.info('Field count: ' + fieldCount);
+
+while (rowRS.isValidRow()){
+  Ti.API.info('habit ---> name: ' + rowRS.fieldByName('name') +', days: ' + rowRS.fieldByName('days') + ', status: ' + rowRS.fieldByName('status'));
+  rowRS.next();
+}
+*/
+
+// DB에서 테이블에 넣을 데이터 뽑아오기 
+var rows = db.execute('SELECT * FROM habit');
+var tableData = [];
+while (rows.isValidRow()){
+  var row = Ti.UI.createTableViewRow({
+    className:'habits', // used to improve table performance
+    selectedBackgroundColor:'white',
+    //rowIndex:rows.fieldByName('id'), // custom property, useful for determining the row during events
+    height:60
+  });
+  
+  var habitName = Ti.UI.createLabel({
+    color:'#576996',
+    font:{fontFamily:'Arial', fontSize:defaultFontSize+6, fontWeight:'bold'},
+    text:rows.fieldByName('name'),
+    left:10, top: 20,
+    width:200, height: 30
+  });
+  row.add(habitName);
+  
+  var habitStatus = Ti.UI.createLabel({
+    color:'#999',
+    font:{fontFamily:'Arial', fontSize:defaultFontSize, fontWeight:'normal'},
+    text:rows.fieldByName('status'),
+    left:240, top:20,
+    width:200, height:20
+  });
+  row.add(habitStatus);
+  tableData.push(row);
+  rows.next();
+}
+rows.close();
+/* 기본 UI 구성하기 (윈도우,뷰,탭) */
 // this sets the background color of the master UIView (when there are no windows/tab groups on it)
 Titanium.UI.setBackgroundColor('#000');
 
@@ -44,53 +108,6 @@ var label1 = Titanium.UI.createLabel({
 });
 win1.add(label1);
 
-var data = [
-		{title:"매일 코딩", hasChild:true, color:'red', selectedColor:'#fff'},
-		{title:"매일 운동", hasChild:true, color:'red', selectedColor:'#fff'},
-		{title:"매일 독서", hasChild:true, color:'red', selectedColor:'#fff'},
-		{title:"매일 신문", hasChild:true, color:'red', selectedColor:'#fff'},
-		{title:"매일 편지", hasChild:true, color:'red', selectedColor:'#fff'}
-];
-
-// generate random number, used to make each row appear distinct for this example
-function randomInt(max){
-  return Math.floor(Math.random() * max) + 1;
-}
-
-// var IMG_BASE = 'https://github.com/appcelerator/titanium_mobile/raw/master/demos/KitchenSink/Resources/images/';
-var defaultFontSize = Ti.Platform.name === 'android' ? 16 : 14;
-
-var tableData = [];
-
-for (var i=0; i<=data.length; i++){
-  var row = Ti.UI.createTableViewRow({
-    className:'habits', // used to improve table performance
-    selectedBackgroundColor:'white',
-    rowIndex:i, // custom property, useful for determining the row during events
-    height:60
-  });
-  
-  var habitName = Ti.UI.createLabel({
-    color:'#576996',
-    font:{fontFamily:'Arial', fontSize:defaultFontSize+6, fontWeight:'bold'},
-    text:'habit'+i,
-    left:10, top: 20,
-    width:200, height: 30
-  });
-  row.add(habitName);
-  
-  var habitProgress = Ti.UI.createLabel({
-    color:'#999',
-    font:{fontFamily:'Arial', fontSize:defaultFontSize, fontWeight:'normal'},
-    text:randomInt(100) + ' % 진행',
-    left:240, top:20,
-    width:200, height:20
-  });
-  row.add(habitProgress);
-  tableData.push(row);
-}
-
-// 테이블 뷰 위에 텍스트필드 넣기
 // 텍스트 필드 생성. 키보드 타입 지정.  
 var tf1 = Titanium.UI.createTextField({
 		color:'#336699',
@@ -104,45 +121,32 @@ var tf1 = Titanium.UI.createTextField({
 		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
 });
 
-// 엔터치면 로컬 DB에 새로운 습관 저장 
+// 엔터치면 로컬 DB에 새로운 습관이름 저장 
 tf1.addEventListener('return', function()
 {
+	db.execute('INSERT INTO habit (name) VALUES (?)', tf1.getValue());
 	tf1.blur();
-});    
+	while (rowRS.isValidRow()){
+	  	Ti.API.info('habit ---> name: ' + rowRS.fieldByName('name') +', days: ' + rowRS.fieldByName('days') + ', status: ' + rowRS.fieldByName('status'));
+		rowRS.next();
+	}
+});   
 win1.add(tf1);
 
-
+// 테이블 뷰 만들기 
 var tableView = Ti.UI.createTableView({
   backgroundColor:'white',
   top:50,
   data:tableData
 });
 
+// 테이블 행 이벤트 
 tableView.addEventListener('click',function(e){
 	tab1.open(win2);
 });
 
 win1.add(tableView);
 win1.open();
-
-/*
-var inputWindow = Ti.UI.createWindow({
-	title: '습관 입력',
-	backgroundColor:'#fff',
-	url: 'inputWindow.js'
-});
-
-
-// 내비게이션 바에 추가 버튼 만들기
-var addHabit = Titanium.UI.createButton({ title:'추가' });
-win1.rightNavButton = addHabit;
-addHabit.addEventListener('click', function()
-{
-	//tab1.open(win3);
-
-	tab1.open(inputWindow);
-});
-*/
 
 //
 // create controls tab and root window
@@ -203,7 +207,7 @@ var calculateDate = function(y,m,d){
 }
 //alert('오늘은 서기 1년 1월 1일부터 '+calculateDate(currentYear,currentMonth,currentDate)+'번째 날짜이다.');
 
-/* UI 그리기 */
+/* 달력 그리기 */
 
 // 월 이름 표기하기 
 var monthName = Ti.UI.createLabel({
@@ -265,7 +269,7 @@ for(var d=0;d<7;d++){
 	win2.add(dayName[d]);	
 };
 
-/* 달력 그리기 */
+// 달력 그리기 함수 
 
 var drawCalendar = function(y,m){ 
 	var tile = new Array(42);
@@ -353,4 +357,5 @@ var drawCalendar = function(y,m){
 	}
 };
 drawCalendar(currentYear,currentMonth);
+//db.close();
 
