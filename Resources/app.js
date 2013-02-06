@@ -48,38 +48,7 @@ while (rowRS.isValidRow()){
 }
 */
 
-// DB에서 테이블에 넣을 데이터 뽑아오기 
-var rows = db.execute('SELECT * FROM habit');
-var tableData = [];
-while (rows.isValidRow()){
-  var row = Ti.UI.createTableViewRow({
-    className:'habits', // used to improve table performance
-    selectedBackgroundColor:'white',
-    //rowIndex:rows.fieldByName('id'), // custom property, useful for determining the row during events
-    height:60
-  });
-  
-  var habitName = Ti.UI.createLabel({
-    color:'#576996',
-    font:{fontFamily:'Arial', fontSize:defaultFontSize+6, fontWeight:'bold'},
-    text:rows.fieldByName('name'),
-    left:10, top: 20,
-    width:200, height: 30
-  });
-  row.add(habitName);
-  
-  var habitStatus = Ti.UI.createLabel({
-    color:'#999',
-    font:{fontFamily:'Arial', fontSize:defaultFontSize, fontWeight:'normal'},
-    text:rows.fieldByName('status'),
-    left:240, top:20,
-    width:200, height:20
-  });
-  row.add(habitStatus);
-  tableData.push(row);
-  rows.next();
-}
-rows.close();
+
 /* 기본 UI 구성하기 (윈도우,뷰,탭) */
 // this sets the background color of the master UIView (when there are no windows/tab groups on it)
 Titanium.UI.setBackgroundColor('#000');
@@ -108,45 +77,6 @@ var label1 = Titanium.UI.createLabel({
 });
 win1.add(label1);
 
-// 텍스트 필드 생성. 키보드 타입 지정.  
-var tf1 = Titanium.UI.createTextField({
-		color:'#336699',
-		height:35,
-		top:10,
-		left:10,
-		width:300,
-		hintText:'Add an item',
-		keyboardType:Titanium.UI.KEYBOARD_DEFAULT,
-		returnKeyType:Titanium.UI.RETURNKEY_DEFAULT,
-		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
-});
-
-// 엔터치면 로컬 DB에 새로운 습관이름 저장 
-tf1.addEventListener('return', function()
-{
-	db.execute('INSERT INTO habit (name) VALUES (?)', tf1.getValue());
-	tf1.blur();
-	while (rowRS.isValidRow()){
-	  	Ti.API.info('habit ---> name: ' + rowRS.fieldByName('name') +', days: ' + rowRS.fieldByName('days') + ', status: ' + rowRS.fieldByName('status'));
-		rowRS.next();
-	}
-});   
-win1.add(tf1);
-
-// 테이블 뷰 만들기 
-var tableView = Ti.UI.createTableView({
-  backgroundColor:'white',
-  top:50,
-  data:tableData
-});
-
-// 테이블 행 이벤트 
-tableView.addEventListener('click',function(e){
-	tab1.open(win2);
-});
-
-win1.add(tableView);
-win1.open();
 
 //
 // create controls tab and root window
@@ -182,6 +112,80 @@ tabGroup.addTab(tab2);
 
 // open tab group
 tabGroup.open();
+
+/* 테이블과 DB 연동하기 */
+// 테이블 그리기 함수
+var makeTable = function(){
+	//로컬 DB에서 테이블에 넣을 데이터 가져오기 
+	var rows = db.execute('SELECT * FROM habit');
+	var tableData = [];
+
+	while (rows.isValidRow()){
+	  var row = Ti.UI.createTableViewRow({
+	    className:'habits', // used to improve table performance
+	    selectedBackgroundColor:'white',
+	    //rowIndex:rows.fieldByName('id'), // custom property, useful for determining the row during events
+	    height:60
+	  });
+	  
+	  var habitName = Ti.UI.createLabel({
+	    color:'#576996',
+	    font:{fontFamily:'Arial', fontSize:defaultFontSize+6, fontWeight:'bold'},
+	    text:rows.fieldByName('name'),
+	    left:10, top: 20,
+	    width:200, height: 30
+	  });
+	  row.add(habitName);
+	  
+	  var habitStatus = Ti.UI.createLabel({
+	    color:'#999',
+	    font:{fontFamily:'Arial', fontSize:defaultFontSize, fontWeight:'normal'},
+	    text:rows.fieldByName('status'),
+	    left:240, top:20,
+	    width:200, height:20
+	  });
+	  row.add(habitStatus);
+	  tableData.push(row);
+	  rows.next();
+	}
+	rows.close();
+	// 테이블 뷰 만들기 
+	var tableView = Ti.UI.createTableView({
+	  backgroundColor:'white',
+	  top:50,
+	  data:tableData
+	});	
+	win1.add(tableView);
+	// 테이블 행 이벤트 
+	tableView.addEventListener('click',function(e){
+		tab1.open(win2);
+	});
+};
+makeTable();
+
+// 텍스트 필드 생성. 키보드 타입 지정.  
+var tf1 = Titanium.UI.createTextField({
+		color:'#336699',
+		height:35,
+		top:10,
+		left:10,
+		width:300,
+		hintText:'Add an item',
+		keyboardType:Titanium.UI.KEYBOARD_DEFAULT,
+		returnKeyType:Titanium.UI.RETURNKEY_DEFAULT,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+});
+
+// 엔터치면 로컬 DB에 새로운 습관이름 저장 
+tf1.addEventListener('return', function()
+{
+	db.execute('INSERT INTO habit (name,status) VALUES (?,?)', tf1.getValue(),"0%");
+	win1.open();
+	tf1.blur();
+	makeTable();
+});   
+win1.add(tf1);
+
 
 /* 달력 알고리즘 */
 
