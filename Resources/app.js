@@ -19,34 +19,35 @@ var currentDate = date.getDate();
 
 
 /* DB 만들기 */
- 
 var db = Ti.Database.open('habits');
 db.execute('CREATE TABLE IF NOT EXISTS habit (name TEXT, days TEXT, status TEXT)');
 db.execute('DELETE FROM habit');
 
 // 초기 데이터 입력 
-var habit01Array = ['매일 코딩','12','20%'];
+var habit01Array = ['매일 코딩','20130201','20%'];
 db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit01Array);
-var habit02Array = ['매일 운동','24','30%'];
+var habit02Array = ['매일 운동','20130202','30%'];
 db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit02Array);
-var rowRS = db.execute('SELECT * FROM habit');
 
-/*
-Ti.API.info('Row count: ' + rowRS.rowCount);
-var fieldCount;
-// fieldCount is a property on Android.
-if (Ti.Platform.name === 'android') {
-    fieldCount = rowRS.fieldCount;
-} else {
-    fieldCount = rowRS.fieldCount();
+/* DB 확인 함수 */
+var checkDB = function() {
+	var rowRS = db.execute('SELECT * FROM habit');
+	Ti.API.info('Row count: ' + rowRS.rowCount);
+	var fieldCount;
+	// fieldCount is a property on Android.
+	if (Ti.Platform.name === 'android') {
+	    fieldCount = rowRS.fieldCount;
+	} else {
+	    fieldCount = rowRS.fieldCount();
+	}
+	Ti.API.info('Field count: ' + fieldCount);
+	
+	while (rowRS.isValidRow()){
+	  Ti.API.info('habit ---> name: ' + rowRS.fieldByName('name') +', days: ' + rowRS.fieldByName('days') + ', status: ' + rowRS.fieldByName('status'));
+	  rowRS.next();
+	}	
 }
-Ti.API.info('Field count: ' + fieldCount);
 
-while (rowRS.isValidRow()){
-  Ti.API.info('habit ---> name: ' + rowRS.fieldByName('name') +', days: ' + rowRS.fieldByName('days') + ', status: ' + rowRS.fieldByName('status'));
-  rowRS.next();
-}
-*/
 
 
 /* 기본 UI 구성하기 (윈도우,뷰,탭) */
@@ -101,8 +102,6 @@ var label2 = Titanium.UI.createLabel({
 
 win2.add(label2);
 
-
-
 //
 //  add tabs
 //
@@ -112,6 +111,7 @@ tabGroup.addTab(tab2);
 
 // open tab group
 tabGroup.open();
+
 
 /* 테이블과 DB 연동하기 */
 // 테이블 그리기 함수
@@ -287,6 +287,7 @@ var drawCalendar = function(y,m){
 	//타일 생성 
 	for(var i=0;i<tile.length;i++){
 		if(i>=start && i<=(datesOnMonth[m]+(start-1))){
+			// 오늘 날짜 푸른색 표기 
 			if(i==currentDate-start+3){
 				tile[i] = Ti.UI.createButton({
 				title:i-start+1,
@@ -355,6 +356,9 @@ var drawCalendar = function(y,m){
 				image:'/checkmark.png'
 			});
 			this.add(check);
+			db.execute('INSERT INTO habit (days) VALUES (?)', this.getTitle());
+			checkDB();
+			//Ti.API.info(this.getTitle());
 		});
 		//타일을 뷰에 더하기 
 		win2.add(tile[i]);	
