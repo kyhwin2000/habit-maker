@@ -12,9 +12,9 @@ db.execute('CREATE TABLE IF NOT EXISTS habit (name TEXT, days TEXT, status TEXT)
 db.execute('DELETE FROM habit');
 
 // 초기 데이터 입력 
-var habit01Array = ['매일 코딩','20130201','20%'];
+var habit01Array = ['매일 코딩','12','20%'];
 db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit01Array);
-var habit02Array = ['매일 운동','20130202','30%'];
+var habit02Array = ['매일 운동','21','30%'];
 db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit02Array);
 
 /* 기본 UI 구성하기 (윈도우,뷰,탭) */
@@ -84,12 +84,12 @@ var makeTable = function(){
 	//로컬 DB에서 테이블에 넣을 데이터 가져오기 
 	var rows = db.execute('SELECT * FROM habit');
 	var tableData = [];
-
+	
+	var i = 0;
 	while (rows.isValidRow()){
 	  var row = Ti.UI.createTableViewRow({
 	    className:'habits', // used to improve table performance
 	    selectedBackgroundColor:'white',
-	    //rowIndex:rows.fieldByName('id'), // custom property, useful for determining the row during events
 	    height:60
 	  });
 	  
@@ -97,6 +97,7 @@ var makeTable = function(){
 	    color:'#576996',
 	    font:{fontFamily:'Arial', fontSize:defaultFontSize+6, fontWeight:'bold'},
 	    text:rows.fieldByName('name'),
+	    rowID:i,
 	    left:20, top: 20,
 	    width:200, height: 30
 	  });
@@ -112,6 +113,7 @@ var makeTable = function(){
 	  row.add(habitStatus);
 	  tableData.push(row);
 	  rows.next();
+	  i++;
 	}
 	rows.close();
 	// 테이블 뷰 만들기 
@@ -123,6 +125,9 @@ var makeTable = function(){
 	win1.add(tableView);
 	// 테이블 행 이벤트 
 	tableView.addEventListener('click',function(e){
+		//어느 행을 찍었는지를 로컬 프로퍼티에 저장
+		Ti.App.Properties.setInt('selectedRow',e.source.rowID);
+		//Ti.API.info('selected Row Index is '+Ti.App.Properties.getInt('selectedRow'));
 		tab1.open(win3);
 	});
 };

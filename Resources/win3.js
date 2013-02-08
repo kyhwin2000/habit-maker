@@ -137,6 +137,22 @@ var drawCalendar = function(y,m){
 	//월 이름 표기하기
 	monthName.setText(y+'년 '+m+'월');
 	
+	//db에서 기 체크된 날짜 확인  
+	var rowRS = db.execute('SELECT * FROM habit');
+	var selectedRow = Ti.App.Properties.getInt('selectedRow');
+	var i = 0;
+	while(i!=selectedRow){
+		rowRS.next();
+		i++;
+	}
+	var rowDays = rowRS.fieldByName('days');
+	Ti.API.info(rowDays);
+	
+	//체크 표시 이미지 뷰 생성 
+	var checked = Ti.UI.createImageView({
+		image:'/checkmark.png'
+	});
+
 	//타일 생성 
 	for(var i=0;i<tile.length;i++){
 		if(i>=start && i<=(datesOnMonth[m]+(start-1))){
@@ -183,7 +199,12 @@ var drawCalendar = function(y,m){
 				color:'gray'
 			});
 		}
-			
+		
+		//기 체크된 날짜 표시 
+		if(tile[i].getTitle() == rowDays){
+			tile[i].add(checked);
+		}	
+		
 		//타일 위치 조정
 		if(i>=7 && i<14) { 
 			tile[i].setTop(tile[i].getTop()+30);
@@ -201,17 +222,18 @@ var drawCalendar = function(y,m){
 			tile[i].setTop(tile[i].getTop()+150);
 			tile[i].setLeft(tile[i].getLeft()-tileWidth*35);
 		}
+		
 		//타일 탭 이벤트 설정
 		tile[i].addEventListener('click',function(e){
 			this.backgroundColor = '#FEF9BF';
 			this.color = '#008E00';
-			var check = Ti.UI.createImageView({
+			//체크 표시 이미지 뷰 생성 
+			var checked = Ti.UI.createImageView({
 				image:'/checkmark.png'
 			});
-			this.add(check);
+			this.add(checked);
 			db.execute('INSERT INTO habit (days) VALUES (?)', this.getTitle());
 			checkDB();
-			//Ti.API.info(this.getTitle());
 		});
 		//타일을 뷰에 더하기 
 		curWin.add(tile[i]);	
