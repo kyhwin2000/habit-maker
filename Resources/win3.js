@@ -13,7 +13,7 @@ var datesOnMonth = new Array(31,31,28,31,30,31,30,31,31,30,31,30,31);
 var days = new Array('일','월','화','수','목','금','토');
 
 /* db 열기 */ 
-var db = Ti.Database.open('habits');
+var db = Ti.Database.open('habitDB');
 // db 확인 함수 
 var checkDB = function() {
 	var rowRS = db.execute('SELECT * FROM habit');
@@ -146,7 +146,7 @@ var drawCalendar = function(y,m){
 		i++;
 	}
 	var rowDays = rowRS.fieldByName('days');
-	Ti.API.info(rowDays);
+	//Ti.API.info(rowDays);
 	
 	//체크 표시 이미지 뷰 생성 
 	var checked = Ti.UI.createImageView({
@@ -232,7 +232,9 @@ var drawCalendar = function(y,m){
 				image:'/checkmark.png'
 			});
 			this.add(checked);
-			db.execute('INSERT INTO habit (days) VALUES (?)', this.getTitle());
+			db.execute('UPDATE habit SET days=? WHERE id=?',this.getTitle(),selectedRow+1);
+			Ti.API.info(this.getTitle());
+			Ti.API.info(selectedRow);
 			checkDB();
 		});
 		//타일을 뷰에 더하기 

@@ -7,8 +7,8 @@ var osname = Ti.Platform.osname,
 var defaultFontSize = Ti.Platform.name === 'android' ? 16 : 14;
 
 /* DB 만들기 */
-var db = Ti.Database.open('habits');
-db.execute('CREATE TABLE IF NOT EXISTS habit (name TEXT, days TEXT, status TEXT)');
+var db = Ti.Database.open('habitDB');
+db.execute('CREATE TABLE IF NOT EXISTS habit (id INTEGER PRIMARY KEY, name TEXT, days TEXT, status TEXT)');
 db.execute('DELETE FROM habit');
 
 // 초기 데이터 입력 
@@ -18,7 +18,7 @@ var habit02Array = ['매일 운동','21','30%'];
 db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit02Array);
 
 /* 기본 UI 구성하기 (윈도우,뷰,탭) */
-// this sets the background color of the master UIView (when there are no windows/tab groups on it)
+// this sets the background color of the master UIView (when there are id windows/tab groups on it)
 Titanium.UI.setBackgroundColor('#000');
 
 // create tab group
@@ -150,7 +150,6 @@ var tf1 = Titanium.UI.createTextField({
 tf1.addEventListener('return', function()
 {
 	db.execute('INSERT INTO habit (name,status) VALUES (?,?)', tf1.getValue(),"0%");
-	win1.open();
 	tf1.blur();
 	makeTable();
 });   
