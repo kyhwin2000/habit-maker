@@ -137,7 +137,7 @@ var drawCalendar = function(y,m){
 	//월 이름 표기하기
 	monthName.setText(y+'년 '+m+'월');
 	
-	//db에서 기 체크된 날짜 확인  
+	//db에서 기 체크된 날짜 불러오기   
 	var rowRS = db.execute('SELECT * FROM habit');
 	var selectedRow = Ti.App.Properties.getInt('selectedRow');
 	var i = 0;
@@ -145,38 +145,45 @@ var drawCalendar = function(y,m){
 		rowRS.next();
 		i++;
 	}
-	var rowDays = rowRS.fieldByName('days');
-	//Ti.API.info(rowDays);
-	
-	//체크 표시 이미지 뷰 생성 
-	var checked = Ti.UI.createImageView({
-		image:'/checkmark.png'
-	});
+	var rowDays = JSON.parse(rowRS.fieldByName('days'));
+	//Ti.API.info(rowDays[0]);
 
 	//타일 생성 
 	for(var i=0;i<tile.length;i++){
-		if(i>=start && i<=(datesOnMonth[m]+(start-1))){
-			// 오늘 날짜 푸른색 표기 
+		if(i>=start && i<=(datesOnMonth[m]+(start-1))){ 
 			if(i==currentDate-start+3){
 				tile[i] = Ti.UI.createButton({
-				title:i-start+1,
-				top:130,
-				left:0+i*tileWidth,
-				width:tileWidth,
-				height:30,
-				backgroundColor:'white',
-				color:'blue'
+					title:i-start+1,
+					top:130,
+					left:0+i*tileWidth,
+					width:tileWidth,
+					height:30,
+					backgroundColor:'white',
+					color:'blue'	// 오늘 날짜 푸른색 표기
 				});
 			} else {
 				tile[i] = Ti.UI.createButton({
-				title:i-start+1,
-				top:130,
-				left:0+i*tileWidth,
-				width:tileWidth,
-				height:30,
-				backgroundColor:'white',
-				color:'black'
+					title:i-start+1,
+					top:130,
+					left:0+i*tileWidth,
+					width:tileWidth,
+					height:30,
+					backgroundColor:'white',
+					color:'black'	// 오늘이 아닌 날은 검은색 
 				});
+				//기 체크된 날짜에 체크마크 
+				for(var j in rowDays){
+					var tileDate = currentYear+'-'+currentMonth+'-'+tile[i].getTitle();
+					//Ti.API.info(tileDate);
+					var rowDate = rowDays[j];
+					//Ti.API.info(rowDate);
+					if(tileDate == rowDate){ 
+						var checkmark = Ti.UI.createImageView({
+							image:'/checkmark.png'
+						});
+						tile[i].add(checkmark);	
+					}
+				}
 			}	
 		} else if(i<start){
 			tile[i] = Ti.UI.createButton({
@@ -186,7 +193,7 @@ var drawCalendar = function(y,m){
 				width:tileWidth,
 				height:30,
 				backgroundColor:'white',
-				color:'gray'
+				color:'gray'	// 이전 달은 회색 
 			});
 		} else {
 			tile[i] = Ti.UI.createButton({
@@ -196,14 +203,11 @@ var drawCalendar = function(y,m){
 				width:tileWidth,
 				height:30,
 				backgroundColor:'white',
-				color:'gray'
+				color:'gray'	// 다음 달은 회색 
 			});
 		}
 		
-		//기 체크된 날짜 표시 
-		if(tile[i].getTitle() == rowDays){
-			tile[i].add(checked);
-		}	
+
 		
 		//타일 위치 조정
 		if(i>=7 && i<14) { 
@@ -228,13 +232,12 @@ var drawCalendar = function(y,m){
 			this.backgroundColor = '#FEF9BF';
 			this.color = '#008E00';
 			//체크 표시 이미지 뷰 생성 
-			var checked = Ti.UI.createImageView({
+			var checkmark = Ti.UI.createImageView({
 				image:'/checkmark.png'
 			});
-			this.add(checked);
-			db.execute('UPDATE habit SET days=? WHERE id=?',this.getTitle(),selectedRow+1);
-			Ti.API.info(this.getTitle());
-			Ti.API.info(selectedRow);
+			this.add(checkmark);
+			rowDays += ','+currentYear+'-'+currentMonth+'-'+this.getTitle();
+			db.execute('UPDATE habit SET days=? WHERE id=?',rowDays,selectedRow+1);
 			checkDB();
 		});
 		//타일을 뷰에 더하기 

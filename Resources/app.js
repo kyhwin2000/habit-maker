@@ -8,13 +8,20 @@ var defaultFontSize = Ti.Platform.name === 'android' ? 16 : 14;
 
 /* DB 만들기 */
 var db = Ti.Database.open('habitDB');
+db.execute('DROP TABLE IF EXISTS habit');
 db.execute('CREATE TABLE IF NOT EXISTS habit (id INTEGER PRIMARY KEY, name TEXT, days TEXT, status TEXT)');
 db.execute('DELETE FROM habit');
 
 // 초기 데이터 입력 
-var habit01Array = ['매일 코딩','12','20%'];
+var chk01Dates = ['2013-2-9','2013-2-12','2013-2-20'];
+var Json01String = JSON.stringify(chk01Dates);
+//Ti.API.info(JsonString + "  length=" + chk01Dates.length);
+var chk02Dates = ['2013-2-2','2013-2-4','2013-2-10'];
+var Json02String = JSON.stringify(chk02Dates);
+
+var habit01Array = ['매일 코딩',Json01String,'20%'];
 db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit01Array);
-var habit02Array = ['매일 운동','21','30%'];
+var habit02Array = ['매일 운동',Json02String,'30%'];
 db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit02Array);
 
 /* 기본 UI 구성하기 (윈도우,뷰,탭) */
