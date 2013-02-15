@@ -39,7 +39,6 @@ var currentMonth = date.getMonth()+1;
 var currentDate = date.getDate();
 //alert('오늘은 '+currentYear+'년 '+currentMonth+'월 '+currentDate+'일이다.');
 
-
 /* 달력 알고리즘 */
 
 // 서기 1년 1월 1일~ y년 m월 d일까지의 경과된 날수 파악하기 
@@ -236,9 +235,12 @@ var drawCalendar = function(y,m){
 				image:'/checkmark.png'
 			});
 			this.add(checkmark);
-			rowDays += ','+currentYear+'-'+currentMonth+'-'+this.getTitle();
-			db.execute('UPDATE habit SET days=? WHERE id=?',rowDays,selectedRow+1);
-			checkDB();
+			var addDate = currentYear+'-'+currentMonth+'-'+this.getTitle();
+			rowDays.push(addDate);
+			var jsonRD = JSON.stringify(rowDays);
+			db.execute('UPDATE habit SET days=? WHERE id=?',jsonRD,selectedRow+1);
+			db.execute('UPDATE habit SET status=? WHERE id=?',rowDays.length+'%',selectedRow+1);
+			//checkDB();
 		});
 		//타일을 뷰에 더하기 
 		curWin.add(tile[i]);	
