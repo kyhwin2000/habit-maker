@@ -129,6 +129,7 @@ for(var d=0;d<7;d++){
 
 var drawCalendar = function(y,m){ 
 	var tile = new Array(42);
+	var label = new Array(42);
 	var start = calculateDate(y,m,1)%7;
 	//alert('이번 달 1일은 '+(start+1)+'번째 칸이다.');
 	//alert('이번 달 말일은 '+datesOnMonth[m]+'일이다.');
@@ -151,99 +152,160 @@ var drawCalendar = function(y,m){
 	for(var i=0;i<tile.length;i++){
 		if(i>=start && i<=(datesOnMonth[m]+(start-1))){ 
 			if(i==currentDate-start+3){
-				tile[i] = Ti.UI.createButton({
-					title:i-start+1,
+				tile[i] = Ti.UI.createView({
+					borderRaduis:3,borderColor:'gray',
 					top:130,
 					left:0+i*tileWidth,
 					width:tileWidth,
 					height:30,
-					backgroundColor:'white',
+					backgroundColor:'white'			
+				});
+				curWin.add(tile[i]);
+				label[i] = Ti.UI.createLabel({
+					top:130,
+					left:0+i*tileWidth,
+					textAlign: 'center',
+					width: tileWidth,
+					height:30, 
+					text:i-start+1,
 					color:'blue'	// 오늘 날짜 푸른색 표기
-				});
+				})
+				curWin.add(label[i]);
 			} else {
-				tile[i] = Ti.UI.createButton({
-					title:i-start+1,
+				tile[i] = Ti.UI.createView({
+					borderRaduis:3,borderColor:'gray',
 					top:130,
 					left:0+i*tileWidth,
 					width:tileWidth,
 					height:30,
-					backgroundColor:'white',
-					color:'black'	// 오늘이 아닌 날은 검은색 
+					backgroundColor:'white' 
 				});
+				curWin.add(tile[i]);
+				label[i] = Ti.UI.createLabel({
+					top:130,
+					left:0+i*tileWidth,
+					textAlign: 'center',
+					width: tileWidth, 
+					height:30,
+					text:i-start+1,
+					color:'black'	// 오늘이 아닌 날은 검은색
+				})
+				curWin.add(label[i]);
 				//기 체크된 날짜에 체크마크 
 				for(var j in rowDays){
-					var tileDate = currentYear+'-'+currentMonth+'-'+tile[i].getTitle();
+					var tileDate = currentYear+'-'+currentMonth+'-'+label[i].getText();
 					//Ti.API.info(tileDate);
 					var rowDate = rowDays[j];
-					//Ti.API.info(rowDate);
 					if(tileDate == rowDate){ 
 						var checkmark = Ti.UI.createImageView({
 							image:'/checkmark.png'
 						});
-						tile[i].add(checkmark);	
+						label[i].add(checkmark);	
+						//label[i].setColor('green');
 					}
 				}
 			}	
 		} else if(i<start){
-			tile[i] = Ti.UI.createButton({
-				title:datesOnMonth[m-1]-(start-i)+1,
+			tile[i] = Ti.UI.createView({
+				borderRaduis:3,borderColor:'gray',
 				top:130,
 				left:0+i*tileWidth,
 				width:tileWidth,
 				height:30,
-				backgroundColor:'white',
-				color:'gray'	// 이전 달은 회색 
+				backgroundColor:'white' 
 			});
+			curWin.add(tile[i]);
+			label[i] = Ti.UI.createLabel({
+				top:130,
+				left:0+i*tileWidth,
+				text:datesOnMonth[m-1]-(start-i)+1,
+				textAlign: 'center',
+				width: tileWidth, 
+				height:30,
+				color:'gray'	// 이전 달은 회색
+			})
+			curWin.add(label[i]);
 		} else {
-			tile[i] = Ti.UI.createButton({
-				title:i-(datesOnMonth[m]+(start-1)),
+			tile[i] = Ti.UI.createView({
+				borderRaduis:3,borderColor:'gray',
 				top:130,
 				left:0+i*tileWidth,
 				width:tileWidth,
 				height:30,
-				backgroundColor:'white',
-				color:'gray'	// 다음 달은 회색 
+				backgroundColor:'white' 
 			});
-		}
-		
-
+			curWin.add(tile[i]);
+			label[i] = Ti.UI.createLabel({
+				top:130,
+				left:0+i*tileWidth,
+				text:i-(datesOnMonth[m]+(start-1)),
+				textAlign: 'center',
+				width: tileWidth, 
+				height:30,
+				color:'gray'	// 다음 달은 회색
+			})
+			curWin.add(label[i]);
+		}		
 		
 		//타일 위치 조정
 		if(i>=7 && i<14) { 
 			tile[i].setTop(tile[i].getTop()+30);
 			tile[i].setLeft(tile[i].getLeft()-tileWidth*7);
+			label[i].setTop(label[i].getTop()+30);
+			label[i].setLeft(label[i].getLeft()-tileWidth*7);
 		} else if(i>=14 && i<21){
 			tile[i].setTop(tile[i].getTop()+60);
 			tile[i].setLeft(tile[i].getLeft()-tileWidth*14);
+			label[i].setTop(label[i].getTop()+60);
+			label[i].setLeft(label[i].getLeft()-tileWidth*14);
 		} else if(i>=21 && i<28){
 			tile[i].setTop(tile[i].getTop()+90);
 			tile[i].setLeft(tile[i].getLeft()-tileWidth*21);
+			label[i].setTop(label[i].getTop()+90);
+			label[i].setLeft(label[i].getLeft()-tileWidth*21);
 		} else if(i>=28 && i<35){
 			tile[i].setTop(tile[i].getTop()+120);
 			tile[i].setLeft(tile[i].getLeft()-tileWidth*28);
+			label[i].setTop(label[i].getTop()+120);
+			label[i].setLeft(label[i].getLeft()-tileWidth*28);
 		} else if(i>=35){
 			tile[i].setTop(tile[i].getTop()+150);
 			tile[i].setLeft(tile[i].getLeft()-tileWidth*35);
+			label[i].setTop(label[i].getTop()+150);
+			label[i].setLeft(label[i].getLeft()-tileWidth*35);
 		}
 		
-		//타일 탭 이벤트 설정
-		tile[i].addEventListener('click',function(e){
-			this.backgroundColor = '#FEF9BF';
-			this.color = '#008E00';
+		//날짜 체크 시 이벤트 설정
+		label[i].addEventListener('click',function(e){
 			//체크 표시 이미지 뷰 생성 
 			var checkmark = Ti.UI.createImageView({
 				image:'/checkmark.png'
 			});
-			this.add(checkmark);
-			var addDate = currentYear+'-'+currentMonth+'-'+this.getTitle();
-			rowDays.push(addDate);
-			var jsonRD = JSON.stringify(rowDays);
-			db.execute('UPDATE habit SET days=? WHERE id=?',jsonRD,selectedRow+1);
-			db.execute('UPDATE habit SET status=? WHERE id=?',rowDays.length+'%',selectedRow+1);
+			if(this.getChildren()!=""){
+				//자식 뷰 다 지우기
+				for (var d in this.children){
+				    this.remove(this.children[d]);
+				}
+				// DB에 언체크된 날짜 지우기
+				var subDate = currentYear+'-'+currentMonth+'-'+this.getText();
+				rowDays.splice(rowDays.indexOf(subDate),1);
+				var jsonRD = JSON.stringify(rowDays);
+				db.execute('UPDATE habit SET days=? WHERE id=?',jsonRD,selectedRow+1);
+				db.execute('UPDATE habit SET status=? WHERE id=?',rowDays.length+'%',selectedRow+1);
+				checkDB();	
+			} else {
+				//체크 이미지 뷰 더하기 
+				this.add(checkmark);
+				//DB에 체크된 날짜 더하기 
+				var addDate = currentYear+'-'+currentMonth+'-'+this.getText();
+				rowDays.push(addDate);
+				var jsonRD = JSON.stringify(rowDays);
+				db.execute('UPDATE habit SET days=? WHERE id=?',jsonRD,selectedRow+1);
+				db.execute('UPDATE habit SET status=? WHERE id=?',rowDays.length+'%',selectedRow+1);
+				checkDB();
+			}
 			//checkDB();
-		});
-		//타일을 뷰에 더하기 
-		curWin.add(tile[i]);	
+		});		
 	}
 };
 drawCalendar(currentYear,currentMonth);
