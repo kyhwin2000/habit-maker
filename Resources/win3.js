@@ -201,7 +201,6 @@ var drawCalendar = function(y,m){
 							image:'/checkmark.png'
 						});
 						label[i].add(checkmark);	
-						//label[i].setColor('green');
 					}
 				}
 			}	
@@ -305,7 +304,7 @@ var drawCalendar = function(y,m){
 				checkDB();
 			}
 			//checkDB();
-		});		
+		});
 	}
 };
 drawCalendar(currentYear,currentMonth);

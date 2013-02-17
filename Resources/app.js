@@ -44,6 +44,8 @@ var tab1 = Titanium.UI.createTab({
     window:win1
 });
 
+
+
 //
 // create controls tab and root window
 //
@@ -162,7 +164,7 @@ tf1.addEventListener('return', function()
 });   
 win1.add(tf1);
 
-
+win1.addEventListener('focus',makeTable);
 
 //db.close();
 
