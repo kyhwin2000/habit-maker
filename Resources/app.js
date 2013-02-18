@@ -129,7 +129,9 @@ var makeTable = function(){
 	var tableView = Ti.UI.createTableView({
 	  backgroundColor:'white',
 	  top:50,
-	  data:tableData
+	  data:tableData,
+	  editable:true,
+	  moveable:true
 	});	
 	win1.add(tableView);
 	// 테이블 행 이벤트 
@@ -158,9 +160,10 @@ var tf1 = Titanium.UI.createTextField({
 // 엔터치면 로컬 DB에 새로운 습관이름 저장 
 tf1.addEventListener('return', function()
 {
-	db.execute('INSERT INTO habit (name,status) VALUES (?,?)', tf1.getValue(),"0%");
+	db.execute('INSERT INTO habit (name,days,status) VALUES (?,?,?)',tf1.getValue(),Json02String,"0%");
 	tf1.blur();
 	makeTable();
+	//Ti.API.info(currentFullDate);
 });   
 win1.add(tf1);
 
