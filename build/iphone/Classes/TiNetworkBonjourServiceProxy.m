@@ -3,6 +3,8 @@
  * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
+ * 
+ * WARNING: This is generated code. Modify at your own risk and without support.
  *
  * Special thanks to Steve Tramer for implementing this.
  */
@@ -402,14 +404,20 @@ const NSString* socketKey = @"socket";
 
 #pragma mark Domain management
 
+-(void)fireDomainUpdateEvent
+{
+	NSDictionary * eventObject = [NSDictionary dictionaryWithObject:
+								  [[domains copy] autorelease] forKey:@"domains"];
+	[self fireEvent:@"updatedDomains" withObject:eventObject];	//TODO: Deprecate old event.
+	[self fireEvent:@"updateddomains" withObject:eventObject];	
+}
+
 -(void)netServiceBrowser:(NSNetServiceBrowser*)browser didFindDomain:(NSString*)domain moreComing:(BOOL)more
 {
     [domains addObject:domain];
     
     if (!more) {
-        [self fireEvent:@"updatedDomains"
-             withObject:[NSDictionary dictionaryWithObject:[[domains copy] autorelease]
-                                                    forKey:@"domains"]];
+		[self fireDomainUpdateEvent];
     }
 }
 
@@ -418,9 +426,7 @@ const NSString* socketKey = @"socket";
     [domains removeObject:domain];
     
     if (!more) {
-        [self fireEvent:@"updatedDomains"
-             withObject:[NSDictionary dictionaryWithObject:[[domains copy] autorelease]
-                                                    forKey:@"domains"]];
+		[self fireDomainUpdateEvent];
     }
 }
 

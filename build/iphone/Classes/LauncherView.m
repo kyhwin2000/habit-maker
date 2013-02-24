@@ -68,12 +68,12 @@ static const NSTimeInterval kLauncherViewFastTransitionDuration = 0.2;
 
 @synthesize columnCount, rowCount, delegate, editable;
 
-- (id)initWithFrame:(CGRect)frame 
+- (id)initWithFrame:(CGRect)frame withRowCount:(int)newRowCount withColumnCount:(int)newColumnCount
 {
     if ((self = [super initWithFrame:frame])) 
 	{
-		self.columnCount = kLauncherViewDefaultColumnCount;
-		self.rowCount = 0;
+        self.rowCount = newRowCount;
+        self.columnCount = newColumnCount;
 		self.currentPageIndex = 0;
         self.editable = YES;
         
@@ -115,19 +115,18 @@ static const NSTimeInterval kLauncherViewFastTransitionDuration = 0.2;
 
 -(LauncherButton*)addButtonWithItem:(LauncherItem*)item
 {
-	LauncherButton *button = [[LauncherButton alloc] initWithFrame:CGRectZero];
-	[button setTitle:item.title forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(buttonTouchedUpInside:) forControlEvents:UIControlEventTouchUpInside];
-	[button addTarget:self action:@selector(buttonTouchedUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
-	[button addTarget:self action:@selector(buttonTouchedDown:withEvent:) forControlEvents:UIControlEventTouchDown];
-	[scrollView addSubview:button];
-	button.item = item;
-	return [button autorelease];
+    LauncherButton *button = [[LauncherButton alloc] initWithFrame:CGRectZero];
+    [button addTarget:self action:@selector(buttonTouchedUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(buttonTouchedUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
+    [button addTarget:self action:@selector(buttonTouchedDown:withEvent:) forControlEvents:UIControlEventTouchDown];
+    [scrollView addSubview:button];
+    button.item = item;
+    return [button autorelease];
 }
 
 -(NSInteger)rowHeight
 {
-	return MAX(33,(scrollView.frame.size.height /3));
+	return MAX(33,(scrollView.frame.size.height / rowCount));
 }
 
 - (NSMutableArray*)pageWithFreeSpace:(NSInteger)pageIndex 
@@ -144,15 +143,6 @@ static const NSTimeInterval kLauncherViewFastTransitionDuration = 0.2;
 	NSMutableArray* page = [NSMutableArray array];
 	[pages addObject:page];
 	return page;
-}
-
-- (NSInteger)rowCount 
-{
-	if (!rowCount) 
-	{
-		rowCount = floor(self.frame.size.height / [self rowHeight]);
-	}
-	return rowCount;
 }
 
 - (NSInteger)currentPageIndex 
@@ -252,9 +242,9 @@ static const NSTimeInterval kLauncherViewFastTransitionDuration = 0.2;
 - (void)recreateButtons 
 {
     if (![NSThread isMainThread]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        TiThreadPerformOnMainThread( ^{
             [self recreateButtons];
-        });
+        }, NO);
         return;
     }
     
@@ -359,8 +349,8 @@ static const NSTimeInterval kLauncherViewFastTransitionDuration = 0.2;
 	
 	if (dragButton) 
 	{
-		dragButton.selected = NO;
-		dragButton.highlighted = NO;
+		[dragButton setSelected:NO];
+		[dragButton setHighlighted:NO];
 		dragButton.dragging = NO;
 		[self layoutButtons];
 	}
@@ -557,7 +547,7 @@ static const NSTimeInterval kLauncherViewFastTransitionDuration = 0.2;
 	}
 }
 
-- (void)closeButtonTouchedUpInside:(LauncherButton*)closeButton 
+- (void)closeButtonTouchedUpInside:(LauncherButton*)closeButton
 {
 	for (NSArray* buttonPage in buttons) 
 	{
@@ -685,23 +675,22 @@ static const NSTimeInterval kLauncherViewFastTransitionDuration = 0.2;
 }
 
 
-- (void)editHoldTimer:(NSTimer*)timer 
+- (void)editHoldTimer:(NSTimer*)timer
 {
     editHoldTimer = nil;
 
 	NSArray *data = timer.userInfo;
 	LauncherButton *button = [data objectAtIndex:0];
 	UIEvent *event = [data objectAtIndex:1];
-    if (button.item.userData == nil) {
+    if ( button.item.userData == nil) {
         return;
     }
 	
 	[self beginEditing];
 	
-	button.selected = NO;
-	button.highlighted = NO;
-	
-	[self startDraggingButton:button withEvent:event];
+    [button setSelected:NO];
+    [button setHighlighted:NO];
+    [self startDraggingButton:button withEvent:event];
 }
 
 

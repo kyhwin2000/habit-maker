@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2010 by habitmaker, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -39,6 +39,9 @@
 #endif
 #ifdef USE_TI_UIIOSTABBEDBAR
 -(id)createTabbedBar:(id)args;
+#endif
+#if defined(USE_TI_UIIPADDOCUMENTVIEWER) || defined(USE_TI_UIIOSDOCUMENTVIEWER)
+-(id)createDocumentViewer:(id)args;
 #endif
 
 @end

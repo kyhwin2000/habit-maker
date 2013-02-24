@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2011 by habitmaker, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -27,7 +27,7 @@
 // Public API
 -(NSNumber*)append:(id)args;
 -(NSNumber*)insert:(id)args;
--(NSNumber*)copy:(id)args;
+-(NSNumber*)copy:(id)args NS_RETURNS_NOT_RETAINED;
 -(TiBuffer*)clone:(id)args;
 -(void)fill:(id)args;
 

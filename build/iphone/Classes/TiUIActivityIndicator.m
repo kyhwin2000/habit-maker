@@ -110,6 +110,11 @@
 	return messageLabel;
 }
 
+- (id)accessibilityElement
+{
+	return [self messageLabel];
+}
+
 -(void)frameSizeChanged:(CGRect)frame bounds:(CGRect)bounds
 {
 	[self setNeedsLayout];

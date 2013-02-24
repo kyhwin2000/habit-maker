@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2011 by habitmaker, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -86,7 +86,7 @@
 	// Create the default button, and set the default size
 	[[self module] addListener:self];
 	
-	button = [[FBLoginButton2 alloc] initWithFrame:[self frameForButtonStyle:buttonStyle]];
+	button = [[FBLoginButton alloc] initWithFrame:[self frameForButtonStyle:buttonStyle]];
 	button.isLoggedIn = [[self module] isLoggedIn];
 	button.style = buttonStyle;
 	[button updateImage];
@@ -125,6 +125,11 @@
 	[button updateImage];
 	[button sizeToFit];
 	[self recenterButton];
+}
+
+- (id)accessibilityElement
+{
+	return button;
 }
 
 

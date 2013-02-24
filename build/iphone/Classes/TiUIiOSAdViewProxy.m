@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2010 by habitmaker, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -33,6 +33,15 @@
 	return @"ADBannerContentSize480x32";
 }
 
+-(TiDimension)defaultAutoWidthBehavior:(id)unused
+{
+    return TiDimensionAutoSize;
+}
+-(TiDimension)defaultAutoHeightBehavior:(id)unused
+{
+    return TiDimensionAutoSize;
+}
+
 USE_VIEW_FOR_CONTENT_HEIGHT
 USE_VIEW_FOR_CONTENT_WIDTH
 
@@ -60,12 +69,23 @@ USE_VIEW_FOR_CONTENT_WIDTH
     // Sanity check values
     if (!([arg isEqualToString:[TiUIiOSAdViewProxy portraitSize]] || [arg isEqualToString:[TiUIiOSAdViewProxy landscapeSize]])) {
         [self throwException:@"TiInvalidArg" 
-                   subreason:@"Invalid value for habitmaker.UI.iOS.AdView.adSize"
+                   subreason:@"Invalid value for Ti.UI.iOS.AdView.adSize"
                     location:CODELOCATION];
     }
     
     // Need to ensure the size is set on the UI thread
     [self makeViewPerformSelector:@selector(setAdSize:) withObject:arg createIfNeeded:YES waitUntilDone:NO];
+}
+
+-(void)fireLoad:(id)unused
+{
+    if ([self _hasListeners:@"load"])
+    {
+        NSMutableDictionary *event = [NSMutableDictionary dictionary];
+        [self fireEvent:@"load" withObject:event];
+    }
+
+    [self contentsWillChange];
 }
 
 @end

@@ -36,7 +36,7 @@
 -(void) setBackgroundGradient_:(TiGradient *)newGradient;
 -(void) setSelectedBackgroundGradient_:(TiGradient *)newGradient;
 
--(void) updateGradientLayer:(BOOL)useSelected;
+-(void) updateGradientLayer:(BOOL)useSelected withAnimation:(BOOL)animated;
 -(CGSize)computeCellSize;
 
 @end
@@ -88,11 +88,13 @@
 -(IBAction)hideSearchScreen:(id)sender;
 -(UITableView*)tableView;
 -(CGFloat)tableRowHeight:(CGFloat)height;
+-(void)setScrollsToTop_:(id)value;
 
 #pragma Private
 -(void)selectRow:(id)args;
 -(void)deselectRow:(id)args;
-
+-(void)reloadDataFromCount:(int)oldCount toCount:(int)newCount animation:(UITableViewRowAnimation)animation;
+-(void)refreshSearchControllerUsingReload:(BOOL)reloadSearch;
 
 @end
 

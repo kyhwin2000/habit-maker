@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2012 by habitmaker, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -21,6 +21,7 @@
 #import "TiFile.h"
 #import "TiBlob.h"
 #import "Base64Transcoder.h"
+#import "TiExceptionHandler.h"
 
 // for checking version
 #import <sys/utsname.h>
@@ -79,6 +80,11 @@ bool Base64AllocAndEncodeData(const void *inInputData, size_t inInputDataSize, c
     }    
 }
 
++(BOOL)isRetinaFourInch
+{
+    return ([[UIScreen mainScreen] bounds].size.height == 568);
+}
+
 +(BOOL)isRetinaDisplay
 {
 	// since we call this alot, cache it
@@ -117,6 +123,11 @@ bool Base64AllocAndEncodeData(const void *inInputData, size_t inInputDataSize, c
 +(BOOL)isIOS5OrGreater
 {
   return [UIAlertView instancesRespondToSelector:@selector(alertViewStyle)];
+}
+
++(BOOL)isIOS6OrGreater
+{
+    return [UIViewController instancesRespondToSelector:@selector(shouldAutomaticallyForwardRotationMethods)];
 }
 
 +(BOOL)isIPad
@@ -587,7 +598,7 @@ bool Base64AllocAndEncodeData(const void *inInputData, size_t inInputDataSize, c
 
 	NSString *ext = [path pathExtension];
 
-	if(![ext isEqualToString:@"png"] && ![ext isEqualToString:@"jpg"])
+	if(![ext isEqualToString:@"png"] && ![ext isEqualToString:@"jpg"] && ![ext isEqualToString:@"jpeg"])
 	{ //It's not an image.
 		return url;
 	}
@@ -600,6 +611,13 @@ bool Base64AllocAndEncodeData(const void *inInputData, size_t inInputDataSize, c
 	NSString *os = [TiUtils isIPad] ? @"~ipad" : @"~iphone";
 
 	if([TiUtils isRetinaDisplay]){
+		if ([TiUtils isRetinaFourInch]) {
+			// first try -568h@2x iphone5 specific
+			NSString *testpath = [NSString stringWithFormat:@"%@-568h@2x.%@",partial,ext];
+			if ([fm fileExistsAtPath:testpath]) {
+				return [NSURL fileURLWithPath:testpath];
+			}
+		}
 		// first try 2x device specific
 		NSString *testpath = [NSString stringWithFormat:@"%@@2x%@.%@",partial,os,ext];
 		if ([fm fileExistsAtPath:testpath])
@@ -1051,6 +1069,20 @@ If the new path starts with / and the base url is app://..., we have to massage 
 	return result;
 }
 
++(TiScriptError*) scriptErrorValue:(id)value;
+{
+	if ((value == nil) || (value == [NSNull null])){
+		return nil;
+	}
+	if ([value isKindOfClass:[TiScriptError class]]){
+		return value;
+	}
+	if ([value isKindOfClass:[NSDictionary class]]) {
+		return [[[TiScriptError alloc] initWithDictionary:value] autorelease];
+	}
+	return [[[TiScriptError alloc] initWithMessage:[value description] sourceURL:nil lineNo:0] autorelease];
+}
+
 +(UITextAlignment)textAlignmentValue:(id)alignment
 {
 	UITextAlignment align = UITextAlignmentLeft;
@@ -1075,27 +1107,6 @@ If the new path starts with / and the base url is app://..., we have to massage 
 		align = [alignment intValue];
 	}
 	return align;
-}
-
-+(NSString*)exceptionMessage:(id)arg
-{
-	if ([arg isKindOfClass:[NSDictionary class]])
-	{
-		// check to see if the object past is a JS Error object and if so attempt
-		// to construct a string that is more readable to the developer
-		id message = [arg objectForKey:@"message"];
-		if (message!=nil)
-		{
-			id source = [arg objectForKey:@"sourceURL"];
-			if (source!=nil)
-			{
-				id lineNumber = [arg objectForKey:@"line"];
-				return [NSString stringWithFormat:@"%@ at %@ (line %@)",message,[source lastPathComponent],lineNumber];
-			}
-            return [NSString stringWithFormat:@"%@ (unknown file)", message];
-		}
-	}
-	return arg;
 }
 
 #define RETURN_IF_ORIENTATION_STRING(str,orientation) \

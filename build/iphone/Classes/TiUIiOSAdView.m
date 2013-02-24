@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2010 by habitmaker, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -32,6 +32,11 @@ extern NSString * const TI_APPLICATION_ANALYTICS;
 		[self addSubview:adview];
 	}
 	return adview;
+}
+
+- (id)accessibilityElement
+{
+	return [self adview];
 }
 
 -(CGFloat)contentHeightForWidth:(CGFloat)value
@@ -76,6 +81,7 @@ extern NSString * const TI_APPLICATION_ANALYTICS;
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner
 {
+    [self.proxy replaceValue:NUMBOOL(YES) forKey:@"visible" notification:YES];
 	if (TI_APPLICATION_ANALYTICS)
 	{
 		NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:[banner currentContentSizeIdentifier],@"size",nil];
@@ -83,11 +89,7 @@ extern NSString * const TI_APPLICATION_ANALYTICS;
 		WARN_IF_BACKGROUND_THREAD_OBJ;	//NSNotificationCenter is not threadsafe!
 		[[NSNotificationCenter defaultCenter] postNotificationName:kTiAnalyticsNotification object:nil userInfo:event]; 
 	}
-	if ([self.proxy _hasListeners:@"load"])
-	{
-		NSMutableDictionary *event = [NSMutableDictionary dictionary];
-		[self.proxy fireEvent:@"load" withObject:event];
-	}
+	[(TiUIiOSAdViewProxy*) self.proxy fireLoad:nil];
 }
 
 - (void)bannerViewActionDidFinish:(ADBannerView *)banner

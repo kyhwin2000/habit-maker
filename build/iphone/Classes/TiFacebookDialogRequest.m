@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2011 by habitmaker, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -67,7 +67,7 @@
 /**
  * Called when dialog failed to load due to an error.
  */
-- (void)dialog:(FBDialog2*)dialog didFailWithError:(NSError *)error
+- (void)dialog:(FBDialog*)dialog didFailWithError:(NSError *)error
 {
 	VerboseLog(@"[INFO] didFailWithError = %@",error);
 	
@@ -87,7 +87,7 @@
  * should hold onto the URL and once you have received their acknowledgement open the URL yourself
  * using [[UIApplication sharedApplication] openURL:].
  */
-- (BOOL)dialog:(FBDialog2*)dialog shouldOpenURLInExternalBrowser:(NSURL *)url
+- (BOOL)dialog:(FBDialog*)dialog shouldOpenURLInExternalBrowser:(NSURL *)url
 {
 	return NO;
 }

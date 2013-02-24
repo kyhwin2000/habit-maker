@@ -30,6 +30,8 @@ typedef enum
 	TiUITableView *table;
 	TiUITableViewSectionProxy *section;
 	TiDimension height;
+	TiDimension leftCap;
+	TiDimension topCap;
 	BOOL configuredChildren;
 	int dirtyRowFlags;
 	BOOL subviewIsAnimating;
@@ -43,6 +45,7 @@ typedef enum
 #pragma mark Public APIs
 
 @property(nonatomic,readonly)	NSString *tableClass;
+@property(nonatomic, readonly) BOOL reusable; // Readonly until reproxy/reuse implemented properly
 
 #pragma mark Framework
 
@@ -51,7 +54,7 @@ typedef enum
 @property(nonatomic,readwrite,assign) NSInteger row;
 @property(nonatomic,readwrite,assign) TiUITableViewCell* callbackCell;
 
-+(void)clearTableRowCell:(UITableViewCell*)cell;
+-(void)prepareTableRowForReuse;
 -(void)initializeTableViewCell:(UITableViewCell*)cell;
 -(CGFloat)sizeWidthForDecorations:(CGFloat)oldWidth forceResizing:(BOOL)force;
 -(CGFloat)rowHeight:(CGFloat)width;
@@ -59,6 +62,7 @@ typedef enum
 -(id)createEventObject:(id)initialObject;
 -(void)triggerAttach;
 -(void)updateRow:(NSDictionary*)data withObject:(NSDictionary*)properties;
+-(UIView*) currentRowContainerView; //Private method :For internal use only.
 
 @end
 

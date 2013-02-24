@@ -58,8 +58,6 @@ typedef enum {
 
 -(id)encodeURIComponent:(id)args;
 -(id)decodeURIComponent:(id)args;
--(void)addConnectivityListener:(id)args;
--(void)removeConnectivityListener:(id)args;
 
 #pragma mark Private
 -(void)updateReachabilityStatus;

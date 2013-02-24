@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2011 by habitmaker, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -34,6 +34,19 @@
 }
 
 @synthesize proxy;
+
+- (BOOL)shouldAutorotate{
+    return [[[TiApp app] controller] shouldAutorotate];
+}
+
+- (NSUInteger)supportedInterfaceOrientations{
+    return [[[TiApp app] controller] supportedInterfaceOrientations];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return [ [[TiApp app] controller] preferredInterfaceOrientationForPresentation];
+}
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {

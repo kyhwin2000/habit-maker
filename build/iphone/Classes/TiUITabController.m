@@ -19,7 +19,6 @@
 -(void)dealloc
 {
 	[(TiWindowProxy *)[self proxy] _associateTab:nil navBar:nil tab:nil];
-	RELEASE_TO_NIL(tab);
 	[super dealloc];
 }
 
@@ -32,7 +31,7 @@
 {
 	if (self = [self initWithViewProxy:window_])
 	{
-		tab = [tab_ retain];
+		tab = tab_;
 		[window_ _associateTab:self navBar:self.navigationController tab:tab];
 	}
 	return self;

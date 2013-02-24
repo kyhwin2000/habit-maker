@@ -35,7 +35,6 @@ TI_INLINE void waitForMemoryPanicCleared()   //WARNING: This must never be run o
 	UIWindow *window;
 	UIImageView *loadView;
 	BOOL loaded;
-	BOOL handledModal;
 
 	TiContextGroupRef contextGroup;
 	KrollBridge *kjsBridge;
@@ -47,7 +46,7 @@ TI_INLINE void waitForMemoryPanicCleared()   //WARNING: This must never be run o
 	NSMutableDictionary *launchOptions;
 	NSTimeInterval started;
 	
-	int networkActivityCount; //We now can use atomic increment/decrement instead. This value is 0 upon initialization anyways.
+	int32_t networkActivityCount;
 	
 	TiRootViewController *controller;
 	NSString *userAgent;
@@ -61,7 +60,7 @@ TI_INLINE void waitForMemoryPanicCleared()   //WARNING: This must never be run o
 	UIBackgroundTaskIdentifier bgTask;
 	NSMutableArray *backgroundServices;
 	NSMutableArray *runningServices;
-	UILocalNotification *localNotification;
+	NSDictionary *localNotification;
 }
 
 /**
@@ -79,6 +78,14 @@ TI_INLINE void waitForMemoryPanicCleared()   //WARNING: This must never be run o
  Dictionary containing details about remote notification, or _nil_.
  */
 @property (nonatomic, readonly) NSDictionary* remoteNotification;
+
+/**
+ Returns local notification that has bees sent on the application.
+ 
+ @return Dictionary containing details about local notification, or _nil_.
+ */
+
+@property (nonatomic, readonly) NSDictionary* localNotification;
 
 /**
  Returns the application's root view controller.
@@ -138,6 +145,15 @@ TI_INLINE void waitForMemoryPanicCleared()   //WARNING: This must never be run o
  */
 -(void)stopNetwork;
 
+/**
+ Prevents network activity indicator from showing.
+ Setting this property to YES disables appearance of network activity indicator when startNetwork is called.
+ In case network activity indicator is currently visible, it will be hidden.
+ @see startNetwork
+ @see stopNetwork
+ */
+@property (nonatomic, assign) BOOL disableNetworkActivityIndicator;
+
 -(void)showModalError:(NSString*)message;
 
 /**
@@ -178,13 +194,6 @@ TI_INLINE void waitForMemoryPanicCleared()   //WARNING: This must never be run o
 -(void)registerBackgroundService:(TiProxy*)proxy;
 -(void)unregisterBackgroundService:(TiProxy*)proxy;
 -(void)stopBackgroundService:(TiProxy*)proxy;
-
-/**
- Returns local notification that has bees sent on the application.
- 
- @return The last local notification
- */
--(UILocalNotification*)localNotification;
 
 @end
 

@@ -35,7 +35,9 @@
 	ENSURE_SINGLE_ARG_OR_NIL(args,NSDictionary);
 	[self rememberSelf];
 	ENSURE_UI_THREAD(show,args);
-	
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(suspended:) name:kTiSuspendNotification object:nil];
+
 	showDialog = YES;
 	NSMutableArray *options = [self valueForKey:@"options"];
 	if (options==nil)
@@ -43,7 +45,9 @@
 		options = [[[NSMutableArray alloc] initWithCapacity:2] autorelease];
 		[options addObject:NSLocalizedString(@"OK",@"Alert OK Button")];
 	}
-	
+
+    persistentFlag = [TiUtils boolValue:[self valueForKey:@"persistent"] def:YES];
+
 	if (actionSheet != nil) {
 		[actionSheet setDelegate:nil];
 		[actionSheet release];
@@ -97,7 +101,7 @@
                                    nil];
             [self fireEvent:@"click" withObject:event];
         }
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self forgetSelf];
         [self release];
     }
@@ -123,6 +127,13 @@
             [self completeWithButton:[actionSheet cancelButtonIndex]];
         }
     }, NO);
+}
+
+-(void)suspended:(NSNotification*)note
+{
+    if (!persistentFlag) {
+        [self hide:[NSArray arrayWithObject: [NSDictionary dictionaryWithObject:NUMBOOL(NO) forKey:@"animated"]]];
+    }
 }
 
 #pragma mark AlertView Delegate

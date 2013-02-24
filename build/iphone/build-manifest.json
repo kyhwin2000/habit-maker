@@ -1,0 +1,22 @@
+{
+	"target": "simulator",
+	"deployType": "development",
+	"deviceFamily": "iphone",
+	"iosSdkPath": "/Users/kimyongho/Library/Application Support/Titanium/mobilesdk/osx/3.0.2.GA/iphone",
+	"appGuid": "72f05384-886b-4bef-b4c7-f56c14d29b99",
+	"tiCoreHash": "fa476584d63923183b326150e75416b3",
+	"modulesHash": "d41d8cd98f00b204e9800998ecf8427e",
+	"gitHash": "5a77fe7",
+	"name": "habit maker",
+	"id": "com.kyhwin2000.habitmaker",
+	"analytics": true,
+	"publisher": "kimyongho",
+	"url": "http://",
+	"version": "1.0",
+	"description": "not specified",
+	"copyright": "2013 by kimyongho",
+	"guid": "72f05384-886b-4bef-b4c7-f56c14d29b99",
+	"skipJSMinification": false,
+	"forceCopy": false,
+	"forceCopyAll": false
+}

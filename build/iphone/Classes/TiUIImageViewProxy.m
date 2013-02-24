@@ -17,6 +17,7 @@
 #import "TiBlob.h"
 
 #define DEBUG_IMAGEVIEW
+#define DEFAULT_IMAGEVIEW_INTERVAL 200
 
 @implementation TiUIImageViewProxy
 @synthesize imageURL;
@@ -51,9 +52,12 @@ static NSArray* imageKeySequence;
 
 -(void)_configure
 {
-	[self replaceValue:NUMBOOL(NO) forKey:@"animating" notification:NO];
-	[self replaceValue:NUMBOOL(NO) forKey:@"paused" notification:NO];
-	[self replaceValue:NUMBOOL(NO) forKey:@"reverse" notification:NO];
+    [self replaceValue:NUMBOOL(NO) forKey:@"animating" notification:NO];
+    [self replaceValue:NUMBOOL(NO) forKey:@"paused" notification:NO];
+    [self replaceValue:NUMBOOL(NO) forKey:@"reverse" notification:NO];
+    [self replaceValue:NUMBOOL(YES) forKey:@"stopped" notification:YES];
+    [self replaceValue:NUMBOOL(YES) forKey:@"autorotate" notification:NO];
+    [self replaceValue:NUMFLOAT(DEFAULT_IMAGEVIEW_INTERVAL) forKey:@"duration" notification:NO];
 }
 
 -(void)start:(id)args
@@ -125,10 +129,6 @@ static NSArray* imageKeySequence;
 -(id)toBlob:(id)args
 {
 	id imageValue = [self valueForKey:@"image"];
-	if (imageValue == nil)
-	{
-		imageValue = [self valueForKey:@"url"];
-	}
 
 	if ([imageValue isKindOfClass:[TiBlob class]])
 	{

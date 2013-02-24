@@ -126,6 +126,26 @@
 	[self setValue:[NSNumber numberWithDouble:coordinate.longitude] forUndefinedKey:@"longitude"];
 }
 
+-(void)setLatitude:(id)latitude
+{
+    double curValue = [TiUtils doubleValue:[self valueForUndefinedKey:@"latitude"]];
+    double newValue = [TiUtils doubleValue:latitude];
+    [self replaceValue:latitude forKey:@"latitude" notification:NO];
+    if (newValue != curValue) {
+        [self setNeedsRefreshingWithSelection:YES];
+    }
+}
+
+-(void)setLongitude:(id)longitude
+{
+    double curValue = [TiUtils doubleValue:[self valueForUndefinedKey:@"longitude"]];
+    double newValue = [TiUtils doubleValue:longitude];
+    [self replaceValue:longitude forKey:@"longitude" notification:NO];
+    if (newValue != curValue) {
+        [self setNeedsRefreshingWithSelection:YES];
+    }
+}
+
 // Title and subtitle for use by selection UI.
 - (NSString *)title
 {
@@ -260,6 +280,17 @@
 		[self setNeedsRefreshingWithSelection:YES];
 	}
 }
+
+-(void)setImage:(id)image
+{
+	id current = [self valueForUndefinedKey:@"image"];
+	[self replaceValue:image forKey:@"image" notification:NO];
+	if ([current isEqual: image] == NO)
+	{
+		[self setNeedsRefreshingWithSelection:YES];
+	}
+}
+
 
 -(int)tag
 {

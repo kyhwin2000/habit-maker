@@ -182,7 +182,7 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args);
 -(void)prepareForNavView:(UINavigationController*)navController;
 
 -(BOOL)modalFlagValue;
-
+-(BOOL)restoreFullScreen;
 /**
  Returns view controller for the window's view.
  */

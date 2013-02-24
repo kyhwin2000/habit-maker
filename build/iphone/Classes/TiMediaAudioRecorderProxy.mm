@@ -206,13 +206,13 @@
         DebugLog(@"[WARN] Invalid mode for audio recorder... setting to default.");
         newMode = kAudioSessionCategory_RecordAudio;
     }
-	DebugLog(@"[WARN] 'habitmaker.Media.AudioRecorder.audioSessionMode' is deprecated; use 'habitmaker.Media.audioSessionMode'");
+	DebugLog(@"[WARN] 'Ti.Media.AudioRecorder.audioSessionMode' is deprecated; use 'Ti.Media.audioSessionMode'");
 	[[TiMediaAudioSession sharedSession] setSessionMode:newMode];
 }
 
 -(NSNumber*)audioSessionMode
 {
-	DebugLog(@"[WARN] 'habitmaker.Media.AudioRecorder.audioSessionMode' is deprecated; use 'habitmaker.Media.audioSessionMode'");	
+	DebugLog(@"[WARN] 'Ti.Media.AudioRecorder.audioSessionMode' is deprecated; use 'Ti.Media.audioSessionMode'");	
     return [NSNumber numberWithUnsignedInt:[[TiMediaAudioSession sharedSession] sessionMode]];
 }
 

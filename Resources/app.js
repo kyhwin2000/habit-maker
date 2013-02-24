@@ -40,7 +40,7 @@ var win1 = Titanium.UI.createWindow({
 });
 var tab1 = Titanium.UI.createTab({  
     icon:'KS_nav_views.png',
-    title:'Tab 1',
+    title:'습관',
     window:win1
 });
 
@@ -50,24 +50,15 @@ var tab1 = Titanium.UI.createTab({
 // create controls tab and root window
 //
 var win2 = Titanium.UI.createWindow({  
+    url:'win2.js',
     title:'습관 그래프',
     backgroundColor:'#fff'
 });
 var tab2 = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
-    title:'Tab 2',
+    title:'보상',
     window:win2
 });
-
-var label2 = Titanium.UI.createLabel({
-	color:'#999',
-	text:'습관 그래프를 그리자',
-	font:{fontSize:20,fontFamily:'Helvetica Neue'},
-	textAlign:'center',
-	width:'auto'
-});
-
-win2.add(label2);
 
 //달력 윈도우 만들기  
 var win3 = Ti.UI.createWindow({

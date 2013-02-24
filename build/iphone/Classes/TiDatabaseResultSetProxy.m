@@ -201,7 +201,7 @@
 	return nil;
 }
 
--(id)fieldCount:(id)args
+-(NSNumber*)fieldCount:(id)unused
 {
 	if (results!=nil)
 	{

@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2011 by habitmaker, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -12,7 +12,7 @@
 #import "KrollCallback.h"
 #import "FBConnect/Facebook.h"
 
-@interface TiFacebookRequest : NSObject<FBRequestDelegate2> {
+@interface TiFacebookRequest : NSObject<FBRequestDelegate> {
 	NSString *path;
 	KrollCallback *callback;
 	FacebookModule *module;

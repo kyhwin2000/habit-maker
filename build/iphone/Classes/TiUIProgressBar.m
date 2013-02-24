@@ -79,6 +79,11 @@
 	return messageLabel;
 }
 
+- (id)accessibilityElement
+{
+	return [self messageLabel];
+}
+
 #pragma mark Repositioning
 
 -(void)layoutSubviews

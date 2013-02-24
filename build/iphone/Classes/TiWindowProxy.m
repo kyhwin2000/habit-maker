@@ -187,6 +187,8 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args)
         }
         RELEASE_TO_NIL(animatedOver);
     }
+	// Send notification to Accessibility subsystem that the screen has changed. This will refresh accessibility focus
+	UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 }
 
 -(void)windowReady
@@ -246,6 +248,14 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args)
 	
 	[self windowDidClose];
 	[self forgetSelf];
+	
+	// Make previous window elements accessible again
+	UIView *rootView = [[TiApp app] controller].view;
+	if ([TiUtils isIOS5OrGreater]) {
+		[(UIView *)[[rootView subviews] lastObject] setAccessibilityElementsHidden:NO];
+	}
+	// Send notification to Accessibility subsystem that the screen has changed. This will refresh accessibility focus
+	UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 }
 
 -(void)windowWillClose
@@ -477,21 +487,8 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args)
 			BOOL animated = [TiUtils boolValue:@"animated" properties:dict def:YES];
 			[self setupWindowDecorations];
 
-			if (rootViewAttached==NO)
-			{
-				//TEMP hack until we can figure out split view issue
-				RELEASE_TO_NIL(tempController);
-				tempController = [[UIViewController alloc]init];
-				UIWindow *w = [self _window];
-				[w addSubview:tempController.view];
-				[tempController presentModalViewController:wc animated:YES];
-				attached = YES;
-			}
-			else
-			{
-				//showModalController will show the passed-in controller's navigation controller if it exists
-				[[TiApp app] showModalController:nc animated:animated];
-			}
+			//showModalController will show the passed-in controller's navigation controller if it exists
+			[[TiApp app] showModalController:nc animated:animated];
 		}
 		if (hasAnimation == NO)
 		{
@@ -590,6 +587,17 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args)
     }, YES);
 }
 
+-(BOOL)restoreFullScreen
+{
+    if (fullscreenFlag && !restoreFullscreen)
+    {
+        [[UIApplication sharedApplication] setStatusBarHidden:restoreFullscreen withAnimation:UIStatusBarAnimationNone];
+        [[[TiApp app] controller] resizeViewForStatusBarHidden];
+        return YES;
+    } 
+    return NO;
+}
+
 -(void)closeOnUIThread:(id)args
 {
 	[self windowWillClose];
@@ -660,10 +668,10 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args)
 			[closeAnimation animate:self];
 		}
 		  
-		if (fullscreenFlag)
+		if (fullscreenFlag && !restoreFullscreen)
 		{
-			[[UIApplication sharedApplication] setStatusBarHidden:restoreFullscreen];
-			self.view.frame = [[[TiApp app] controller] resizeView];
+			[[UIApplication sharedApplication] setStatusBarHidden:restoreFullscreen withAnimation:UIStatusBarAnimationNone];
+			self.view.frame = [[[TiApp app] controller] resizeViewForStatusBarHidden];
 		} 
  
 		if (closeAnimation!=nil)
@@ -684,39 +692,53 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args)
 
 -(void)attachViewToTopLevelWindow
 {
-	if (attached)
-	{
-		return;
-	}
-	attached = YES;
+    if (attached) {
+        return;
+    }
+    attached = YES;
 	
-	UIView *rootView = [[TiApp app] controller].view;
+    /*
+     If opening a regular window on top of a modal window
+     it must be attached to the modal window superview and not 
+     the root controller view
+     */
+    UIView *rootView = nil;
+    TiWindowProxy* topWindow = [[TiApp controller] topWindow];
+    if ( topWindow != nil) {
+        //This will get the nav controller view for modal top windows
+        //and the rootView for regular top windows
+        rootView = [[topWindow view] superview];
+    }
+    if (rootView == nil) {
+        rootView = [[TiApp app] controller].view;
+    }
+
+    TiUIView *view_ = [self view];
 	
-	TiUIView *view_ = [self view];
-	
-	if (![self _isChildOfTab])
-	{
-		//TEMP hack for splitview until we can get things worked out
-		if (rootView.superview==nil && tempController==nil)
-		{
-			tempController = [[UIViewController alloc] init];
-			tempController.view = rootView;
-			[[self _window] addSubview:rootView];
-		}
-		[rootView addSubview:view_];
-		
-		[self controller];
+    /*
+     A modal window is by definition presented and should never be a subview of anything.
+     */
+    if (![self _isChildOfTab]) {
+        if (!modalFlag) {
+			// Hide inactive window elements for accessibility
+			if ([TiUtils isIOS5OrGreater]) {
+				[(UIView *)[[rootView subviews] lastObject] setAccessibilityElementsHidden:YES];
+			}
+            [rootView addSubview:view_];
+        }
 
-		[(TiRootViewController *)[[TiApp app] controller] openWindow:self withObject:nil];
-		[[[TiApp app] controller] windowFocused:[self controller]];
-	}
+        [self controller];
 
-	[self layoutChildren:YES];
+        [(TiRootViewController *)[[TiApp app] controller] openWindow:self withObject:nil];
+        [[[TiApp app] controller] windowFocused:[self controller]];
+    }
 
-	[rootView bringSubviewToFront:view_];
+    if (!modalFlag) {
+        [rootView bringSubviewToFront:view_];
+    }
 
-	// make sure the splash is gone
-	[[TiApp controller] dismissDefaultImageView];
+    // make sure the splash is gone
+    [[TiApp controller] dismissDefaultImageView];
 }
 
 -(NSNumber*)focused
@@ -760,9 +782,6 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args)
 	{
 		DeveloperLog(@"[DEBUG] Focused was already set while in viewDidAppear.");
 	}
-    
-    //Propagate this state to children
-    [self parentDidAppear:[NSNumber numberWithBool:animated]];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -775,23 +794,17 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args)
 	{
 		DeveloperLog(@"[DEBUG] Focused was already cleared while in viewWillDisappear.");
 	}
-    //Propagate this state to children
-    [self parentWillDisappear:[NSNumber numberWithBool:animated]];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
 	[self parentWillShow];
 	TiThreadProcessPendingMainThreadBlocks(0.1, YES, nil);
-    //Propagate this state to children
-    [self parentWillAppear:[NSNumber numberWithBool:animated]];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[self parentWillHide];
-    //Propagate this state to children
-    [self parentDidDisappear:[NSNumber numberWithBool:animated]];
 }
 
 #pragma mark Animation Delegates
@@ -897,6 +910,12 @@ TiOrientationFlags TiOrientationFlagsFromObject(id args)
 	}
 	orientationFlags = newFlags;
 	TiThreadPerformOnMainThread(^{[parentOrientationController childOrientationControllerChangedFlags:self];}, NO);
+}
+
+
+-(NSNumber*)orientation
+{
+	return NUMINT([UIApplication sharedApplication].statusBarOrientation);
 }
 
 

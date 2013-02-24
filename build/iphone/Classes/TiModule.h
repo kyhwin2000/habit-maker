@@ -6,6 +6,7 @@
  * 
  * WARNING: This is generated code. Modify at your own risk and without support.
  */
+#import "TiProxy.h"
 #import "TiUtils.h"
 #import "TiEvaluator.h"
 
@@ -35,6 +36,7 @@
 -(NSString*)moduleId;
 -(BOOL)isJSModule;
 -(NSData*)moduleJS;
+-(NSData*)loadModuleAsset:(NSString*)fromPath;
 
 /*
  Converts a resource name in to a URL.

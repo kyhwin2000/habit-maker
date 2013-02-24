@@ -3,6 +3,8 @@
  * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
+ * 
+ * WARNING: This is generated code. Modify at your own risk and without support.
  *
  * Special thanks to Steve Tramer for implementing this.
  */
@@ -131,16 +133,21 @@
 
 #pragma mark Service management
 
+-(void)fireServiceUpdateEvent
+{
+	NSDictionary * eventObject = [NSDictionary dictionaryWithObject:[[services copy] autorelease] 
+															 forKey:@"services"];
+	[self fireEvent:@"updatedServices" withObject:eventObject];	//TODO: Deprecate old event.
+	[self fireEvent:@"updatedservices" withObject:eventObject];
+}
+
 -(void)netServiceBrowser:(NSNetServiceBrowser*)browser_ didFindService:(NSNetService*)service moreComing:(BOOL)more
 {
     [services addObject:[[[TiNetworkBonjourServiceProxy alloc] initWithContext:[self pageContext]
                                                                 service:service
                                                                   local:NO] autorelease]];
-    
     if (!more) {
-        [self fireEvent:@"updatedServices"
-             withObject:[NSDictionary dictionaryWithObject:[[services copy] autorelease] 
-                                                    forKey:@"services"]];
+		[self fireServiceUpdateEvent];
     }
 }
 
@@ -152,9 +159,7 @@
                                                                      local:NO] autorelease]];
     
     if (!more) {
-        [self fireEvent:@"updatedServices"
-             withObject:[NSDictionary dictionaryWithObject:[[services copy] autorelease] 
-                                                    forKey:@"services"]];
+		[self fireServiceUpdateEvent];
     }
 }
 

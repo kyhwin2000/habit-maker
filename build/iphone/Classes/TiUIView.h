@@ -122,6 +122,7 @@ void ModifyScrollViewForKeyboardHeightAndContentHeightWithResponderRect(UIScroll
  @see updateTouchHandling
  */
 @property(nonatomic,readonly) BOOL touchEnabled;
+@property(nonatomic,readonly) CGSize oldSize;
 
 @property(nonatomic,readonly)	UITapGestureRecognizer*			singleTapRecognizer;
 @property(nonatomic,readonly)	UITapGestureRecognizer*			doubleTapRecognizer;
@@ -177,8 +178,16 @@ void ModifyScrollViewForKeyboardHeightAndContentHeightWithResponderRect(UIScroll
 /*
  Tells the view to change its proxy to the new one provided.
  @param newProxy The new proxy to set on the view.
+ @param deep true for deep transfer
  */
--(void)transferProxy:(TiViewProxy*)newProxy;
+-(void)transferProxy:(TiViewProxy*)newProxy deep:(BOOL)deep;
+
+/*
+ Returns whether the view tree matches proxy tree for later transfer.
+ @param proxy The proxy to validate view tree with.
+ @param deep true for deep validation
+ */
+-(BOOL)validateTransferToProxy:(TiViewProxy*)proxy deep:(BOOL)deep;
 
 /**
  Tells the view to update its touch handling state.
@@ -197,7 +206,7 @@ void ModifyScrollViewForKeyboardHeightAndContentHeightWithResponderRect(UIScroll
  Tells the view to make its root view a first responder.
  */
 -(void)makeRootViewFirstResponder;
-
+-(void)animationStarted;
 -(void)animationCompleted;
 
 /**
@@ -232,6 +241,13 @@ void ModifyScrollViewForKeyboardHeightAndContentHeightWithResponderRect(UIScroll
 
 -(UIView *)gradientWrapperView;
 -(void)checkBounds;
+
+@property (nonatomic, readonly) id accessibilityElement;
+
+- (void)setAccessibilityLabel_:(id)accessibilityLabel;
+- (void)setAccessibilityValue_:(id)accessibilityValue;
+- (void)setAccessibilityHint_:(id)accessibilityHint;
+- (void)setAccessibilityHidden_:(id)accessibilityHidden;
 
 /**
  Whether or not a view not normally picked up by the habitmaker view hierarchy (such as wrapped iOS UIViews) was touched.

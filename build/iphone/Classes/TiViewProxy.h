@@ -35,6 +35,10 @@
  @param args Unused.
  */
 - (void)blur:(id)args;
+/**
+ Tells if this proxy is currently focused
+ */
+- (BOOL)focused;
 
 #pragma mark Private internal APIs.
 
@@ -160,9 +164,9 @@ enum
  */
 @property(nonatomic,readonly) NSArray *children;
 
--(void)startLayout:(id)arg;
--(void)finishLayout:(id)arg;
--(void)updateLayout:(id)arg;
+-(void)startLayout:(id)arg;//Deprecated since 3.0.0
+-(void)finishLayout:(id)arg;//Deprecated since 3.0.0
+-(void)updateLayout:(id)arg;//Deprecated since 3.0.0
 -(void)setTempProperty:(id)propVal forKey:(id)propName;
 -(void)processTempProperties:(NSDictionary*)arg;
 
@@ -369,26 +373,6 @@ enum
  @see viewWillDetach
  */
 -(void)viewDidDetach;
-/**
- Tells the view proxy that parent will appear 
- @see UIViewController viewWillAppear.
- */
--(void)parentWillAppear:(id)args;
-/**
- Tells the view proxy that parent did appear 
- @see UIViewController viewDidAppear.
- */
--(void)parentDidAppear:(id)args;
-/**
- Tells the view proxy that parent will disappear 
- @see UIViewController viewWillDisappear.
- */
--(void)parentWillDisappear:(id)args;
-/**
- Tells the view proxy that parent did appear 
- @see UIViewController viewDidDisappear.
- */
--(void)parentDidDisappear:(id)args;
 
 #pragma mark Housecleaning state accessors
 //TODO: Sounds like the redundancy department of redundancy was here.
@@ -576,6 +560,12 @@ enum
 -(void)reposition;	//Todo: Replace
 
 -(BOOL)willBeRelaying;	//Todo: Replace
+
+-(BOOL) widthIsAutoFill;
+-(BOOL) widthIsAutoSize;
+-(BOOL) heightIsAutoFill;
+-(BOOL) heightIsAutoFill;
+-(BOOL) belongsToContext:(id<TiEvaluator>) context;
 
 /**
  Tells the view that its child view size will change.
