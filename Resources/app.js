@@ -28,24 +28,29 @@ db.execute('INSERT INTO habit (name, days, status) VALUES (?, ?, ?)', habit02Arr
 // this sets the background color of the master UIView (when there are id windows/tab groups on it)
 Titanium.UI.setBackgroundColor('#000');
 
+/*
 // create tab group
 var tabGroup = Titanium.UI.createTabGroup();
+*/
 
 //
 // create base UI tab and root window
 //
-var win1 = Titanium.UI.createWindow({  
+var win1 = Titanium.UI.createWindow();
+
+var win2 = Titanium.UI.createWindow({  
     title:'습관 목록',
     backgroundColor:'#fff'
 });
+/*
 var tab1 = Titanium.UI.createTab({  
     icon:'KS_nav_views.png',
     title:'습관',
     window:win1
 });
+*/
 
-
-
+/*
 //
 // create controls tab and root window
 //
@@ -54,12 +59,14 @@ var win2 = Titanium.UI.createWindow({
     title:'습관 그래프',
     backgroundColor:'#fff'
 });
+*/
+/*
 var tab2 = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
     title:'보상',
     window:win2
 });
-
+*/
 //달력 윈도우 만들기  
 var win3 = Ti.UI.createWindow({
 	url : 'win3.js',
@@ -67,16 +74,20 @@ var win3 = Ti.UI.createWindow({
 	backgroundColor:'#fff'
 });
 
+var nav = Titanium.UI.iPhone.createNavigationGroup({
+   window: win2
+});
+
+/*
 //
 //  add tabs
 //
 tabGroup.addTab(tab1);  
 tabGroup.addTab(tab2);  
 
-
 // open tab group
 tabGroup.open();
-
+*/
 
 /* 테이블과 DB 연동하기 */
 // 테이블 그리기 함수
@@ -124,13 +135,13 @@ var makeTable = function(){
 	  editable:true,
 	  moveable:true
 	});	
-	win1.add(tableView);
+	win2.add(tableView);
 	// 테이블 행 이벤트 
 	tableView.addEventListener('click',function(e){
 		//어느 행을 찍었는지를 로컬 프로퍼티에 저장
 		Ti.App.Properties.setInt('selectedRow',e.source.rowID);
 		//Ti.API.info('selected Row Index is '+Ti.App.Properties.getInt('selectedRow'));
-		tab1.open(win3);
+		nav.open(win3, {animated:true});
 	});
 };
 makeTable();
@@ -156,9 +167,11 @@ tf1.addEventListener('return', function()
 	makeTable();
 	//Ti.API.info(currentFullDate);
 });   
-win1.add(tf1);
 
-win1.addEventListener('focus',makeTable);
+win2.add(tf1);
+win2.addEventListener('focus',makeTable);
 
+win1.add(nav);
+win1.open();
 //db.close();
 
