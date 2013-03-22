@@ -34,6 +34,7 @@ var checkDB = function() {
 	  rowRS.next();
 	}	
 }
+
 // db에서 체크된 날짜 파싱 함수
 var parseDB = function(){
 	var rowRS = db.execute('SELECT * FROM habit');
@@ -139,7 +140,6 @@ for(var d=0;d<7;d++){
 };
 
 // 달력 그리기 함수 
-
 var drawCalendar = function(y,m){ 
 	var tile = new Array(42);
 	var label = new Array(42);
