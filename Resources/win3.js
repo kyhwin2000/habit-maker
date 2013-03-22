@@ -14,10 +14,10 @@ var days = new Array('일','월','화','수','목','금','토');
 
 var selectedRow = Ti.App.Properties.getInt('selectedRow');
 
-/* db 열기 */ 
-var db = Ti.Database.open('habitDB');
+
 // db 확인 함수 
 var checkDB = function() {
+	var db = Ti.Database.open('habitDB');	
 	var rowRS = db.execute('SELECT * FROM habit');
 	Ti.API.info('Row count: ' + rowRS.rowCount);
 	var fieldCount;
@@ -33,10 +33,12 @@ var checkDB = function() {
 	  Ti.API.info('habit ---> name: ' + rowRS.fieldByName('name') +', days: ' + rowRS.fieldByName('days') + ', status: ' + rowRS.fieldByName('status'));
 	  rowRS.next();
 	}	
+	db.close();
 }
 
 // db에서 체크된 날짜 파싱 함수
 var parseDB = function(){
+	var db = Ti.Database.open('habitDB');
 	var rowRS = db.execute('SELECT * FROM habit');
 	var i = 0;
 	while(i!=selectedRow){
@@ -45,6 +47,7 @@ var parseDB = function(){
 	}
 	var rowDays = JSON.parse(rowRS.fieldByName('days'));
 	return rowDays;
+	db.close();
 }
 
 // 오늘 날짜를 변수에 저장
@@ -292,9 +295,11 @@ var drawCalendar = function(y,m){
 				var rowDays = parseDB();
 				rowDays.splice(rowDays.indexOf(subDate),1);
 				var jsonRD = JSON.stringify(rowDays);
+				var db = Ti.Database.open('habitDB');
 				db.execute('UPDATE habit SET days=? WHERE id=?',jsonRD,selectedRow+1);
 				db.execute('UPDATE habit SET status=? WHERE id=?',parseDB().length+'%',selectedRow+1);
 				checkDB();	
+				db.close();
 			} else {
 				//체크 이미지 뷰 더하기 
 				this.add(checkmark);
@@ -304,9 +309,11 @@ var drawCalendar = function(y,m){
 				//Ti.API.info(rowDays);
 				rowDays.push(addDate);
 				var jsonRD = JSON.stringify(rowDays);
+				var db = Ti.Database.open('habitDB');
 				db.execute('UPDATE habit SET days=? WHERE id=?',jsonRD,selectedRow+1);
 				db.execute('UPDATE habit SET status=? WHERE id=?',parseDB().length+'%',selectedRow+1);
 				checkDB();
+				db.close();
 			}
 		});
 	}

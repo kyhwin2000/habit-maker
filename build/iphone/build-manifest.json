@@ -1,7 +1,9 @@
 {
-	"target": "simulator",
-	"deployType": "development",
+	"target": "device",
+	"deployType": "test",
 	"deviceFamily": "iphone",
+	"developerName": "Yong Ho Kim (AZKMFD3Y39)",
+	"distributionName": "Yong Ho Kim (AZKMFD3Y39)",
 	"iosSdkPath": "/Users/kimyongho/Library/Application Support/Titanium/mobilesdk/osx/3.0.2.GA/iphone",
 	"appGuid": "72f05384-886b-4bef-b4c7-f56c14d29b99",
 	"tiCoreHash": "fa476584d63923183b326150e75416b3",

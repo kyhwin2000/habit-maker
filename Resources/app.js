@@ -12,6 +12,27 @@ var db = Ti.Database.open('habitDB');
 db.execute('CREATE TABLE IF NOT EXISTS habit (id INTEGER PRIMARY KEY, name TEXT, days TEXT, status TEXT)');
 db.execute('DELETE FROM habit');
 
+// db 확인 함수 
+var checkDB = function() {
+	var db = Ti.Database.open('habitDB');	
+	var rowRS = db.execute('SELECT * FROM habit');
+	Ti.API.info('Row count: ' + rowRS.rowCount);
+	var fieldCount;
+	// fieldCount is a property on Android.
+	if (Ti.Platform.name === 'android') {
+	    fieldCount = rowRS.fieldCount;
+	} else {
+	    fieldCount = rowRS.fieldCount();
+	}
+	Ti.API.info('Field count: ' + fieldCount);
+	
+	while (rowRS.isValidRow()){
+	  Ti.API.info('habit ---> name: ' + rowRS.fieldByName('name') +', days: ' + rowRS.fieldByName('days') + ', status: ' + rowRS.fieldByName('status'));
+	  rowRS.next();
+	}	
+	db.close();
+}
+
 // 초기 데이터 입력 
 var chk01Dates = ["2013-1-17","2013-1-19","2013-1-20"];
 var Json01String = JSON.stringify(chk01Dates);
@@ -105,10 +126,14 @@ var updateRow = function(){
 	
 	// 테이블 행 이벤트 
 	tableView.addEventListener('click',function(e){
-		//어느 행을 찍었는지를 로컬 프로퍼티에 저장
 		Ti.App.Properties.setInt('selectedRow',e.source.rowID);
-		//달력 윈도를 열기 
 		nav.open(win3,{animated:true});
+	});
+	tableView.addEventListener('delete',function(e){
+		var db02 = Ti.Database.open('habitDB');
+		db02.execute('DELETE FROM habit WHERE id=?',e.index+1);
+		checkDB();
+		db02.close();
 	});
 	win2.add(tableView);
 }
